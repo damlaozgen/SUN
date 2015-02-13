@@ -1,0 +1,1589 @@
+/*************************************************************/
+/********************* TABLE OF CONTENTS *********************/
+/*************************************************************/
+/**                                                         **/
+/** General Styles                                          **/
+/** Typography                                              **/
+/** Regions                                                 **/
+/**  - Region & Block Spacings                              **/
+/**  - Header                                               **/
+/** Venobox                                                 **/
+/** Revolution Slider                                       **/
+/** Menus                                                   **/
+/**  - Nav                                                  **/
+/**  - Main Menu                                            **/
+/** Highlighted                                             **/
+/** Side Image                                              **/
+/** Panels                                                  **/
+/** Portfolio                                               **/
+/**  - Portfolio Block                                      **/
+/** Blog                                                    **/
+/**  - Blog Single                                          **/
+/**  - News Block                                           **/
+/** Comments                                                **/
+/** Pagination                                              **/
+/** Team                                                    **/
+/** Google Maps                                             **/
+/** Tabs                                                    **/
+/** Accordions                                              **/
+/** Buttons                                                 **/
+/** Labels                                                  **/
+/** Alerts                                                  **/
+/** Progress Bars                                           **/
+/** Forms                                                   **/
+/** Colors & Backgrounds                                    **/
+/**  - Text Color Palette                                   **/
+/**  - Background Colors                                    **/
+/**  - Background Images                                    **/
+/**                                                         **/
+/*************************************************************/
+/*************************************************************/
+
+
+
+/*************************************************************/
+/*********************** General Styles **********************/
+/*************************************************************/
+
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.5em;
+  font-weight: 300;
+  line-height: 1.5em;
+  letter-spacing: 0;
+  color: #666;
+  word-wrap: break-word;
+}
+
+a {
+  text-decoration: none;
+  -webkit-transition: all 0.3s ease-out;
+     -moz-transition: all 0.3s ease-out;
+       -o-transition: all 0.3s ease-out;
+          transition: all 0.3s ease-out;
+}
+
+a:hover,
+a:focus,
+a:active {
+  color: #444;
+  text-decoration: none;
+  outline: 0;
+}
+
+
+
+/*************************************************************/
+/************************* Typography ************************/
+/*************************************************************/
+
+.font-quicksand  { font-family: 'Quicksand', sans-serif; }
+.font-roboto     { font-family: 'Roboto', sans-serif; }
+.font-montserrat { font-family: 'Montserrat', sans-serif; }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 1.2em 0 1em;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  color: #444;
+}
+
+h1:first-child,
+h2:first-child,
+h3:first-child,
+h4:first-child,
+h5:first-child,
+h6:first-child {
+  margin-top: 0;
+}
+
+h1:last-child,
+h2:last-child,
+h3:last-child,
+h4:last-child,
+h5:last-child,
+h6:last-child {
+  margin-bottom: 0;
+}
+
+h1 { font-size: 3em; }
+h2 { font-size: 2.5em; }
+h3 { font-size: 2em; }
+h4 { font-size: 1.6em; }
+h5 { font-size: 1.3em; }
+h6 { font-size: 1.1em; }
+
+p, span {
+  font-size: 1em;
+  line-height: 1.6em;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+blockquote {
+  padding-top: 0;
+  padding-bottom: 0;
+  margin: 40px 0;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.5em;
+  line-height: 1.5em;
+}
+
+.icon {
+  display: inline-block;
+  line-height: 1;
+}
+
+.icon-list {
+  list-style: none;
+}
+
+.icon-list li {
+  position: relative;
+}
+
+.icon-list i {
+  position: absolute;
+  top: 0.5em;
+  left: -2em;
+  width: 2em;
+  font-size: 0.8em;
+  line-height: 1em;
+}
+
+ul.tags {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+ul.tags li{
+  display: inline-block;
+  margin-right: 20px;
+  margin-bottom: 10px;
+}
+
+ul.tags li:last-child {
+  margin-right: 0px;
+}
+
+.list-inline {
+  margin-left: 0;
+}
+
+.text-shadow {
+  text-shadow: 0px 1px 3px rgba(0,0,0,.5);
+}
+
+.img-bottom {
+  margin-bottom: -100px;
+}
+
+.line-height-46 { line-height: 46px!important; }
+
+
+
+/*************************************************************/
+/************************** Regions **************************/
+/*************************************************************/
+
+/** Region & Block Spacings **/
+.region,
+.block {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+/** Header **/
+header {
+  z-index: 9999;
+  -webkit-transition: all 0.3s ease-in-out;
+     -moz-transition: all 0.3s ease-in-out;
+       -o-transition: all 0.3s ease-in-out;
+          transition: all 0.3s ease-in-out;
+}
+
+.header-fixed {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+}
+
+.header-light {
+  background-color: rgba(255,255,255,.95);
+}
+
+.header-light,
+.header-light a {
+  color: #444;
+}
+
+.header-dark {
+  background-color: rgba(0,0,0,.7);
+}
+
+.header-dark,
+.header-dark a {
+  color: #fff;
+}
+
+.header-transparent {
+  background-color: transparent;
+}
+
+.header-invisible {
+  opacity: 0;
+}
+
+.stuck.header-light.header-transparent {
+  background-color: rgba(255,255,255,.95);
+}
+
+.stuck.header-dark.header-transparent {
+  background-color: rgba(0,0,0,.5);
+}
+
+.stuck.header-invisible {
+  opacity: 1;
+}
+
+@media (max-width: 767px) {
+
+  .header-fixed {
+    position: static;
+  }
+
+  header.header-light.header-transparent {
+    background-color: rgba(255,255,255,.95);
+  }
+
+  header.header-dark.header-transparent {
+    background-color: rgba(0,0,0,.5);
+  }
+
+}
+
+
+
+/*************************************************************/
+/************************** Venobox **************************/
+/*************************************************************/
+
+.vbox-overlay *,
+.vbox-overlay *:before,
+.vbox-overlay *:after {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-backface-visibility: hidden;
+}
+
+body {
+  -webkit-overflow-scrolling: touch;
+}
+
+.vbox-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  background: rgba(0,0,0,.85);
+  opacity: 0;
+  -webkit-transition: opacity .25s ease-in-out;
+     -moz-transition: opacity .25s ease-in-out;
+          transition: opacity .25s ease-in-out;
+}
+
+.relativo {
+  position: relative;
+  display: block;
+  float: left;
+  width: 100%;
+  height: 100%;
+}
+
+.vbox-preloader {
+  position: fixed; 
+  top: 50%; 
+  left: 50%; 
+  width: 32px; 
+  height: 32px;
+  margin-top: -16px;
+  margin-left: -16px; 
+  overflow: hidden;
+  text-indent: -100px;
+  background-image: url(../img/lightbox/preload-circle.png);
+  -webkit-animation: playload 1.4s steps(18) infinite;
+     -moz-animation: playload 1.4s steps(18) infinite;
+      -ms-animation: playload 1.4s steps(18) infinite;
+       -o-animation: playload 1.4s steps(18) infinite;
+          animation: playload 1.4s steps(18) infinite;
+}
+
+@-webkit-keyframes playload {
+   from { background-position:    0px; }
+     to { background-position: -576px; }
+}
+
+@-moz-keyframes playload {
+   from { background-position:    0px; }
+     to { background-position: -576px; }
+}
+
+@-ms-keyframes playload {
+   from { background-position:    0px; }
+     to { background-position: -576px; }
+}
+
+@-o-keyframes playload {
+   from { background-position:    0px; }
+     to { background-position: -576px; }
+}
+
+@keyframes playload {
+   from { background-position:    0px; }
+     to { background-position: -576px; }
+}
+
+.vbox-close {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  display: block;
+  width: 20px;
+  height: 20px;
+  padding: 20px;
+  overflow: hidden;
+  color: #fff;
+  text-indent: -100px;
+  cursor: pointer;
+  background: url(../img/lightbox/close.gif) no-repeat;
+  background-position: center center;
+}
+
+.vbox-next, .vbox-prev {
+  position: fixed;
+  top: 50%;
+  width: 30px;
+  height: 30px;
+  margin-top: -15px;
+  overflow: hidden;
+  color: #fff;
+  text-indent: -100px;
+  cursor: pointer;
+}
+
+.vbox-prev {
+  left: 10px;
+  background: url(../img/lightbox/prev.gif) center center no-repeat;
+}
+
+.vbox-next {
+  right: 10px;
+  background: url(../img/lightbox/next.gif) center center no-repeat;
+}
+
+.vbox-title {
+  position: fixed;
+  top: -1px;
+  left: 0;
+  display: none;
+  float: left;
+  width: 100%;
+  height: 60px;
+  padding: 0 40px;
+  overflow: hidden;
+  font-size: 1em;
+  line-height: 60px;
+  color: #fff;
+  text-align: center;
+  background: #161617;
+}
+
+.vbox-num {
+  position: fixed;
+  top: -1px;
+  left: 0;
+  display: none;
+  height: 40px;
+  padding: 6px 10px;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 28px;
+  color: #fff;
+  cursor: pointer;
+  background: #161617;
+}
+
+.vbox-inline {
+  width: 420px;
+  height: 315px;
+  padding: 10px;
+  margin: 0 auto;
+  overflow: auto;
+  text-align: left;
+  background: #fff;
+}
+
+.venoframe {
+  width: 960px;
+  height: 720px;
+  border: none;
+}
+
+@media (max-width: 992px) {
+  .venoframe {
+    width: 640px;
+    height: 480px;
+  }
+}
+
+@media (max-width: 767px) {
+  .venoframe {
+    width: 420px;
+    height: 315px;
+  }
+}
+
+@media (max-width: 460px) {
+  .vbox-inline {
+    width: 100%;
+  }
+
+  .venoframe {
+    width: 100%;
+    height: 260px;
+  }
+}
+
+.vbox-container {
+  position: relative;
+  width: 98%;
+  max-width: 1024px;
+  margin: 0 auto;
+  background: #000;
+}
+
+.vbox-content {
+  position: relative;
+  float: left;
+  width: 100%;
+  overflow: hidden;
+  text-align: center;
+}
+
+.vbox-container img {
+  height: auto;
+  max-width: 100%;
+}
+
+.vwrap {
+  position: relative;
+  left: 0;
+  z-index: 1;
+  float: left;
+  width: 100%;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  opacity: 1;
+  -webkit-transition: opacity .25s ease-in-out;
+     -moz-transition: opacity .25s ease-in-out;
+          transition: opacity .25s ease-in-out;
+}
+
+
+
+/*************************************************************/
+/********************* Revolution Slider *********************/
+/*************************************************************/
+
+.boxedcontainer { 
+  max-width: 1170px;
+  padding: 0 30px;
+  margin: auto;
+}
+
+.tp-banner-container {
+  position: relative;
+  width: 100%;
+  padding: 0;
+}
+
+.tp-bullets.preview4 {
+  height: 17px;
+}
+
+.tp-bullets.preview4 .bullet {
+  width: 14px !important;
+  height: 14px !important;
+  margin-right: 12px !important;
+  background: rgba(255,255,255,.7) !important;
+  border: 0 !important;
+  -webkit-border-radius: 20px;
+          border-radius: 20px;
+}
+
+.tp-bullets.preview4 .bullet.last {
+  margin-right: 0 !important;
+}
+
+.tp-bullets.preview4 .bullet:hover,
+.tp-bullets.preview4 .bullet.selected {
+  width: 14px !important;
+  height: 14px !important;
+  background: rgba(255,255,255,1) !important;
+  border: 0 !important;
+}
+
+
+
+/*************************************************************/
+/*************************** Menus ***************************/
+/*************************************************************/
+
+/** Nav **/
+.nav > li > a {
+  padding-left: 0;
+}
+
+.nav > li > a:hover,
+.nav > li > a:focus {
+  background-color: transparent;
+}
+
+/** Main Menu **/
+.main-menu {
+  z-index: 10;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  font-size: 12px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.main-menu .navbar-right .dropdown-menu {
+  right: auto;
+  left: 0;
+}
+
+.main-menu .nav > li > a {
+  padding: 30px 20px;
+}
+
+.main-menu .nav > li:last-child > a {
+  padding-right: 0;
+}
+
+.main-menu a,
+.main-menu .active > a,
+.main-menu .nav .open > a,
+.main-menu .nav .open > a:hover,
+.main-menu .nav .open > a:focus,
+.main-menu .nav > li > a:hover,
+.main-menu .nav > li > a:focus,
+.main-menu .nav > li:hover > a,
+.main-menu .nav > li:focus > a {
+  background-color: transparent;
+}
+
+.main-menu .dropdown-menu {
+  padding: 0;
+  margin: 0;
+  font-size: 0.9em;
+  background-color: #222;
+  border: 0;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.main-menu .dropdown-menu a {
+  padding: 12px 20px;
+  border-bottom: 1px dotted #444;
+}
+
+.main-menu .dropdown-menu li:last-child a {
+  border-bottom: 0;
+}
+
+.main-menu .dropdown-menu > li > a {
+  font-weight: 300;
+  color: #cdcdcd;
+}
+
+.main-menu .dropdown-menu > .active > a,
+.main-menu .dropdown-menu > li > a:hover,
+.main-menu .dropdown-menu > li > a:focus {
+  background-color: #444;
+}
+
+.main-menu .dropdown-menu > li:hover,
+.main-menu .dropdown-menu > .active {
+  background: transparent;
+}
+
+@media (max-width: 991px) {
+
+  .main-menu .nav > li > a {
+    padding-top: 10px;
+  }
+  
+  .main-menu .nav > li:last-child > a {
+    padding-right: 20px;
+  }
+  
+  .main-menu .navbar-collapse {
+    line-height: 10px;
+    text-align: center;
+  }
+  
+  .main-menu .dropdown-menu {
+    text-align: left;
+  }
+  
+  .main-menu .navbar-nav {
+    display: inline-block;
+    float: none!important;
+  }
+  
+  .main-menu .navbar-collapse .navbar-nav.navbar-right:last-child {
+    margin-right: 0;
+  }
+
+}
+
+@media (min-width: 768px) {
+  
+  .main-menu .dropdown:hover .dropdown-menu {
+    display: block;
+  }
+
+}
+
+@media (max-width: 767px) {
+  
+  .main-menu .navbar-header {
+    text-align: right;
+  }
+  
+  .main-menu .navbar-toggle {
+    float: none;
+    padding: 8px 25px;
+    margin: 20px 0;
+    color: #fff;
+    border-radius: 0;
+    text-transform: uppercase;
+  }
+
+  .main-menu .navbar-collapse {
+    padding: 0;
+    margin-bottom: 20px;
+    text-align: right;
+    border: 0;
+    -webkit-box-shadow: none;
+            box-shadow: none;
+  }
+  
+  .main-menu .navbar-nav {
+    margin: 0;
+  }
+  
+  .main-menu .nav > li > a {
+    padding: 8px 5px;
+    margin: 0;
+  }
+
+  .main-menu .nav > li:last-child > a {
+    padding-right: 5px;
+  }
+
+  .main-menu .dropdown-menu {
+    margin-bottom: 12px;
+    text-align: right;
+  }
+
+  .main-menu .dropdown-menu a {
+    border-bottom: 0;
+  }
+
+  .main-menu .dropdown-menu > li > a {
+    color: #777;
+  }
+
+  .main-menu .navbar-nav .open .dropdown-menu > li > a,
+  .main-menu .navbar-nav .open .dropdown-menu .dropdown-header {
+    padding: 6px 35px;
+  }
+
+  .main-menu .dropdown-menu > .active > a,
+  .main-menu .dropdown-menu > li > a:hover,
+  .main-menu .dropdown-menu > li > a:focus {
+    background-color: transparent;
+  }
+  
+}
+
+
+
+/*************************************************************/
+/************************ Highlighted ************************/
+/*************************************************************/
+
+.highlighted-image {
+  height: 500px;
+}
+
+
+
+/*************************************************************/
+/************************ Side Image *************************/
+/*************************************************************/
+
+.side-image {
+  position: absolute;
+  height: 100%;
+}
+
+.side-image-text {
+  padding: 100px 80px;
+}
+
+@media (max-width: 991px) {
+
+  .side-image {
+    position: relative;
+    height: 300px;
+  }
+
+}
+
+
+
+/*************************************************************/
+/*************************** Panels **************************/
+/*************************************************************/
+
+.panel-icon-inline {
+  position: absolute;
+  height: 48px;
+  font-size: 48px;
+}
+
+.panel-title-inline {
+  padding-left: 65px;
+  margin: 0;
+  line-height: 50px;
+}
+
+
+
+/*************************************************************/
+/************************* Portfolio *************************/
+/*************************************************************/
+
+/** Portfolio Block **/
+.portfolio-image {
+  position: relative;
+}
+
+.portfolio-title {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  margin-top: -15px;
+  opacity: 0;
+
+  -webkit-transition: opacity .3s ease-out;
+     -moz-transition: opacity .3s ease-out;
+       -o-transition: opacity .3s ease-out;
+          transition: opacity .3s ease-out;
+}
+
+.portfolio-image:hover .portfolio-title {
+  opacity: 1;
+}
+
+.portfolio-text {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 0 10px;
+  opacity: 0;
+  -webkit-transition: opacity .3s ease-out;
+     -moz-transition: opacity .3s ease-out;
+       -o-transition: opacity .3s ease-out;
+          transition: opacity .3s ease-out;
+}
+
+.portfolio-image:hover .portfolio-text {
+  opacity: 1;
+}
+
+@media (max-width: 991px) {
+
+  .portfolio-slider .owl-buttons {
+    display: none;
+  }
+
+}
+
+
+
+/*************************************************************/
+/**************************** Blog ***************************/
+/*************************************************************/
+
+.blog-menu {
+  line-height: 20px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  font-size: 12px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.blog-post {
+  position: relative;
+}
+
+.blog-post-title {
+  position: absolute;
+  top: 45%;
+  right: 0;
+  left: 0;
+  margin-top: -10px;
+  text-align: center;
+  -webkit-transition: margin-top .3s ease-out;
+     -moz-transition: margin-top .3s ease-out;
+       -o-transition: margin-top .3s ease-out;
+          transition: margin-top .3s ease-out;
+}
+
+.blog-post:hover .blog-post-title {
+  margin-top: -20px;
+}
+
+.blog-post-title.latest-posts {
+  margin-top: 0;
+}
+
+.blog-post-more {
+  font-size: 0.85em;
+  opacity: 0;
+  -webkit-transition: opacity .3s ease-out;
+     -moz-transition: opacity .3s ease-out;
+       -o-transition: opacity .3s ease-out;
+          transition: opacity .3s ease-out;
+}
+
+.blog-post:hover .blog-post-more {
+  opacity: 1;
+}
+
+.blog-post-info {
+  position: absolute;
+  right: 0;
+  bottom: 20px;
+  left: 0; 
+  font-size: .85em;
+  font-style: italic;
+}
+
+.blog-2-post + .blog-2-post {
+  margin-top: 100px;
+}
+
+/** Blog Single **/
+.blog-single-title {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 30px 0;
+}
+
+.blog-single-info {
+  text-decoration: italic;
+  font-size: .85em;
+}
+
+.blog-single-info i {
+  padding: 0 10px 0 30px;
+}
+
+@media (max-width: 991px) {
+
+  .blog-single-title {
+    position: relative;
+    background-color: #333;
+  }
+
+}
+
+/** News Block **/
+.news-block-text {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  text-align: left;
+}
+
+
+
+/*************************************************************/
+/************************** Comments *************************/
+/*************************************************************/
+
+.theme-comments {
+  margin-top: 100px;
+}
+
+.theme-comments-title {
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.theme-comment {
+  margin-top: 80px;
+}
+
+.theme-comment-subject {
+  margin-bottom: 10px;
+}
+
+
+
+/*************************************************************/
+/************************* Pagination ************************/
+/*************************************************************/
+
+.pagination {
+  padding: 0;
+  margin: 100px 0 0;
+  list-style: none;
+}
+
+.pagination > li {
+  display: inline-block;
+}
+
+.pagination > li + li {
+  padding-left: 30px;
+}
+
+.pagination > .active > a {
+  color: #444;
+}
+
+
+
+/*************************************************************/
+/**************************** Team ***************************/
+/*************************************************************/
+
+.team-image {
+  position: relative;
+  text-align: center;
+}
+
+.team-info {
+  position: absolute;
+  right: 0;
+  bottom: 30px;
+  left: 0;
+  opacity: 0;
+  -webkit-transition: opacity .25s ease-in-out;
+     -moz-transition: opacity .25s ease-in-out;
+          transition: opacity .25s ease-in-out;
+}
+
+.team-image:hover .team-info {
+  opacity: 1;
+}
+
+
+
+/*************************************************************/
+/************************ Google Maps ************************/
+/*************************************************************/
+
+.google-map {
+  width: 100%;
+  height: 350px;
+}
+
+.google-map-full {
+  width: 100%;
+  height: 100%;
+}
+
+
+
+/*************************************************************/
+/**************************** Tabs ***************************/
+/*************************************************************/
+
+.nav-tabs {
+  margin-bottom: 20px;
+  border: 0;
+}
+
+.nav.nav-tabs > li > a {
+  padding: 7px 27px;
+}
+
+.nav-tabs > li > a {
+  margin-right: 10px;
+  color: #444;
+  border-radius: 0;
+}
+
+.nav-tabs > li > a:hover {
+  border-color: transparent;
+}
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  background-color: transparent;
+}
+
+.nav-tabs.nav-justified > li > a {
+  margin-right: 10px;
+  color: #444;
+  border-color: transparent;
+  border-radius: 0;
+}
+
+.nav-tabs.nav-justified > li:last-child > a {
+  margin-right: 0;
+}
+
+.nav-tabs.nav-justified > li > a:hover {
+  border-color: transparent;
+}
+
+@media (max-width: 767px) {
+
+  .nav-tabs.nav-justified > li > a {
+    margin-right: 0;
+  }
+
+}
+
+
+
+/*************************************************************/
+/************************* Accordions ************************/
+/*************************************************************/
+
+.panel + .panel {
+  margin-top: 10px;
+}
+
+.panel-heading {
+  padding: 10px 20px;
+  border: 2px solid #555;
+}
+
+.panel-body {
+  padding: 20px;
+}
+
+
+
+/*************************************************************/
+/************************** Buttons **************************/
+/*************************************************************/
+
+.btn {
+  padding: 10px 40px;
+  font-size: inherit;
+  font-weight: 300;
+  line-height: inherit;
+  letter-spacing: inherit;
+  color: #fff;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 0;
+  -webkit-box-shadow: 1px 1px 3px rgba(0,0,0,.1);
+          box-shadow: 1px 1px 3px rgba(0,0,0,.1);
+  -webkit-transition: all 0.3s ease-in-out;
+     -moz-transition: all 0.3s ease-in-out;
+       -o-transition: all 0.3s ease-in-out;
+          transition: all 0.3s ease-in-out;
+}
+
+.btn:hover {
+  color: #444;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.btn + .btn {
+  margin-left: 10px;
+}
+
+.btn:focus,
+.btn:active,
+.btn.active {
+  outline: 0;
+}
+
+.btn-lg {
+  padding: 20px 60px;
+  font-size: 1.3em;
+  line-height: inherit;
+}
+
+.btn-sm,
+.btn-xs {
+  padding: 10px 20px;
+  font-size: 0.8em;
+  line-height: normal;
+}
+
+.btn-xs {
+  padding: 5px 10px;
+}
+
+.btn-default {
+  color: #fff;
+  background-color: #444;
+  border-color: #444;
+}
+
+.btn-default:hover,
+.btn-default:focus,
+.btn-default:active,
+.btn-default.active,
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active {
+  background-color: transparent;
+  border-color: #444;
+}
+
+.btn-inverse {
+  color: #444;
+  border-color: #444;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.btn-inverse:hover,
+.btn-inverse:focus,
+.btn-inverse:active,
+.btn-inverse.active {
+  color: #fff;
+  background-color: #444;
+  border-color: #444;
+}
+
+
+/*************************************************************/
+/*************************** Alerts **************************/
+/*************************************************************/
+
+.alert:last-child {
+  margin-bottom: 0;
+}
+
+
+
+/*************************************************************/
+/*********************** Progress Bars ***********************/
+/*************************************************************/
+
+.progress {
+  height: 20px;
+  background-color: #fff;
+  border-radius: 3px;
+  -webkit-box-shadow: 1px 1px 3px rgba(0,0,0,.1);
+          box-shadow: 1px 1px 3px rgba(0,0,0,.1);
+}
+
+.progress:last-child {
+  margin-bottom: 0;
+}
+
+.progress-title {
+  margin-bottom: 5px;
+}
+
+.progress-bar {
+  padding: 0 10px;
+  font-size: 0.85em;
+  line-height: 20px;
+  text-align: left;
+  -webkit-box-shadow: 1px 1px 3px rgba(0,0,0,.1);
+          box-shadow: 1px 1px 3px rgba(0,0,0,.1);
+}
+
+
+
+/*************************************************************/
+/*************************** Forms ***************************/
+/*************************************************************/
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+select.form-control,
+.form-control {
+  background: transparent;
+  border: 2px solid rgba(0,0,0,.1);
+  border-radius: 0;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  -webkit-transition: all ease-in-out 0.3s;
+          transition: all ease-in-out 0.3s;
+}
+
+.form-control:focus {
+  border-color: rgba(0,0,0,.2);
+  outline: 0;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+textarea,
+input[type="text"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="password"],
+input[type="tel"],
+input[type="number"] {
+  -webkit-appearance: none;
+}
+
+
+
+/*************************************************************/
+/******************** Colors & Backgrounds *******************/
+/*************************************************************/
+
+/** Text Color Palette **/
+.text-color-light,
+.text-color-light p,
+.text-color-light h1,
+.text-color-light h2,
+.text-color-light h3,
+.text-color-light h4,
+.text-color-light h5,
+.text-color-light h6,
+.text-color-light a:hover,
+.text-color-light a:focus,
+.text-color-light a:active {
+  color: #fff;
+}
+
+.text-color-light .btn:hover {
+  color: #fff;
+  border-color: #fff;
+}
+
+.text-color-light .btn-default {
+  color: #444;
+  background-color: #fff;
+  border-color: #fff;
+}
+
+.text-color-light .btn-default:hover {
+  color: #fff;
+  background-color: transparent;
+}
+
+.text-color-light .btn-inverse {
+  color: #fff;
+  border-color: #fff;
+}
+
+.text-color-light .btn-inverse:hover {
+  color: #444;
+  background-color: #fff;
+}
+
+/** Background Colors **/
+.bg-color-grayDark1    { background-color: #333; }
+.bg-color-grayDark2    { background-color: #444; }
+.bg-color-grayLight1   { background-color: #f6f6f6; }
+.bg-color-grayLight2   { background-color: #eeeeee; }
+.bg-color-grayLight3   { background-color: #e0e0e0; }
+
+/** Background Images **/
+.bg-image-rocks {
+  background: url('../img/background-images/rocks.jpg') scroll top no-repeat;
+  -webkit-background-size: cover;
+     -moz-background-size: cover;
+       -o-background-size: cover;
+          background-size: cover;
+}
+
+/** For retina purposes create a 2x image and uncomment this code **/
+/**
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+  .bg-image-rocks {
+    background-image: url('../img/background-images/rocks@2x.jpg');
+  }
+}
+**/
+
+.bg-image-readers {
+  background: url('../img/background-images/readers.jpg') scroll center no-repeat;
+  -webkit-background-size: cover;
+     -moz-background-size: cover;
+       -o-background-size: cover;
+          background-size: cover;
+}
+
+/** For retina purposes create a 2x image and uncomment this code **/
+/**
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+  .bg-image-readers {
+    background-image: url('../img/background-images/readers@2x.jpg');
+  }
+}
+**/
+
+.bg-image-road {
+  background: url('../img/background-images/road.jpg') scroll center no-repeat;
+  -webkit-background-size: cover;
+     -moz-background-size: cover;
+       -o-background-size: cover;
+          background-size: cover;
+}
+
+/** For retina purposes create a 2x image and uncomment this code **/
+/**
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+  .bg-image-road {
+    background-image: url('../img/background-images/road@2x.jpg');
+  }
+}
+**/
+
+.bg-image-coffee {
+  background: url('../img/background-images/coffee.jpg') scroll center no-repeat;
+  -webkit-background-size: cover;
+     -moz-background-size: cover;
+       -o-background-size: cover;
+          background-size: cover;
+}
+
+/** For retina purposes create a 2x image and uncomment this code **/
+/**
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+  .bg-image-coffee {
+    background-image: url('../img/background-images/coffee@2x.jpg');
+  }
+}
+**/
+
+.bg-image-typewriter {
+  background: url('../img/background-images/typewriter.jpg') scroll center no-repeat;
+  -webkit-background-size: cover;
+     -moz-background-size: cover;
+       -o-background-size: cover;
+          background-size: cover;
+}
+
+/** For retina purposes create a 2x image and uncomment this code **/
+/**
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+  .bg-image-typewriter {
+    background-image: url('../img/background-images/typewriter@2x.jpg');
+  }
+}
+**/
+
+.bg-image-party {
+  background: url('../img/background-images/party.jpg') scroll center no-repeat;
+  -webkit-background-size: cover;
+     -moz-background-size: cover;
+       -o-background-size: cover;
+          background-size: cover;
+}
+
+/** For retina purposes create a 2x image and uncomment this code **/
+/**
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+  .bg-image-party {
+    background-image: url('../img/background-images/party@2x.jpg');
+  }
+}
+**/
+
+.bg-image-macdesk {
+  background: url('../img/background-images/macdesk.jpg') scroll center no-repeat;
+  -webkit-background-size: cover;
+     -moz-background-size: cover;
+       -o-background-size: cover;
+          background-size: cover;
+}
+
+/** For retina purposes create a 2x image and uncomment this code **/
+/**
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+  .bg-image-macdesk {
+    background-image: url('../img/background-images/macdesk@2x.jpg');
+  }
+}
+**/
+
+.bg-image-desk {
+  background: url('../img/background-images/desk-sq.jpg') scroll center no-repeat;
+  -webkit-background-size: cover;
+     -moz-background-size: cover;
+       -o-background-size: cover;
+          background-size: cover;
+}
+
+/** For retina purposes create a 2x image and uncomment this code **/
+/**
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+  .bg-image-macdesk {
+    background-image: url('../img/background-images/macdesk@2x.jpg');
+  }
+}
+**/
+
+.bg-image-kindle {
+  background: url('../img/background-images/kindle.jpg') scroll center no-repeat;
+  -webkit-background-size: cover;
+     -moz-background-size: cover;
+       -o-background-size: cover;
+          background-size: cover;
+}
+
+/** For retina purposes create a 2x image and uncomment this code **/
+/**
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+  .bg-image-kindle {
+    background-image: url('../img/background-images/kindle@2x.jpg');
+  }
+}
+**/
+
+.bg-image-lamp {
+  background: url('../img/background-images/lamp.jpg') scroll center no-repeat;
+  -webkit-background-size: cover;
+     -moz-background-size: cover;
+       -o-background-size: cover;
+          background-size: cover;
+}
+
+/** For retina purposes create a 2x image and uncomment this code **/
+/**
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+  .bg-image-lamp {
+    background-image: url('../img/background-images/lamp@2x.jpg');
+  }
+}
+**/
+
+.bg-image-operator {
+  background: url('../img/background-images/operator.jpg') scroll center no-repeat;
+  -webkit-background-size: cover;
+     -moz-background-size: cover;
+       -o-background-size: cover;
+          background-size: cover;
+}
+
+/** For retina purposes create a 2x image and uncomment this code **/
+/**
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+  .bg-image-operator {
+    background-image: url('../img/background-images/operator@2x.jpg');
+  }
+}
+**/
+
+.bg-image-aboutme {
+  background: url('../img/background-images/aboutme.jpg') scroll center no-repeat;
+  -webkit-background-size: cover;
+     -moz-background-size: cover;
+       -o-background-size: cover;
+          background-size: cover;
+}
+
+/** For retina purposes create a 2x image and uncomment this code **/
+/**
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+  .bg-image-aboutme {
+    background-image: url('../img/background-images/aboutme@2x.jpg');
+  }
+}
+**/
+
+.bg-image-map {
+  background: url('../img/background-images/map.jpg') scroll center no-repeat;
+  -webkit-background-size: cover;
+     -moz-background-size: cover;
+       -o-background-size: cover;
+          background-size: cover;
+}
+
+/** For retina purposes create a 2x image and uncomment this code **/
+/**
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+  .bg-image-map {
+    background-image: url('../img/background-images/map@2x.jpg');
+  }
+}
+**/
+
+.bg-image-bear {
+  background: url('../img/background-images/bear.jpg') scroll center no-repeat;
+  -webkit-background-size: cover;
+     -moz-background-size: cover;
+       -o-background-size: cover;
+          background-size: cover;
+}
+
+/** For retina purposes create a 2x image and uncomment this code **/
+/**
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+  .bg-image-bear {
+    background-image: url('../img/background-images/bear@2x.jpg');
+  }
+}
+**/
+
+.bg-image-mountainRoad {
+  background: url('../img/background-images/mountainRoad.jpg') scroll center no-repeat;
+  -webkit-background-size: cover;
+     -moz-background-size: cover;
+       -o-background-size: cover;
+          background-size: cover;
+}
+
+/** For retina purposes create a 2x image and uncomment this code **/
+/**
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+  .bg-image-mountainRoad {
+    background-image: url('../img/background-images/mountainRoad@2x.jpg');
+  }
+}
+**/

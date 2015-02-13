@@ -1,0 +1,153 @@
+/*************************************************************/
+/********************* TABLE OF CONTENTS *********************/
+/*************************************************************/
+/**                                                         **/
+/** General Styles                                          **/
+/** Generic Styles                                          **/
+/** Menus                                                   **/
+/**  - Main Menu                                            **/
+/** Tabs                                                    **/
+/** Accordions                                              **/
+/** Buttons                                                 **/
+/** Progress Bars                                           **/
+/** Colors & Backgrounds                                    **/
+/**  - Text Colors                                          **/
+/**  - Background Colors                                    **/
+/**                                                         **/
+/*************************************************************/
+/*************************************************************/
+
+
+
+/*************************************************************/
+/*********************** General Styles **********************/
+/*************************************************************/
+
+a {
+  color: #9acfb7;
+}
+
+
+
+/*************************************************************/
+/*********************** Generic Styles **********************/
+/*************************************************************/
+
+.overlay-color-theme {
+  background: rgba(154,207,183,.8);
+}
+
+
+
+/*************************************************************/
+/*************************** Menus ***************************/
+/*************************************************************/
+
+/** Main Menu **/
+.main-menu .active > a,
+.main-menu .nav .open > a,
+.main-menu .nav .open > a:hover,
+.main-menu .nav .open > a:focus,
+.main-menu .nav > li > a:hover,
+.main-menu .nav > li > a:focus,
+.main-menu .nav > li:hover > a,
+.main-menu .nav > li:focus > a {
+  color: #9acfb7;
+}
+
+.main-menu .dropdown-menu > .active > a,
+.main-menu .dropdown-menu > li > a:hover,
+.main-menu .dropdown-menu > li > a:focus {
+  color: #9acfb7;
+}
+
+@media (max-width: 767px) {
+  
+  .main-menu .navbar-toggle {
+    background: #9acfb7;
+    border: 1px solid #9acfb7;
+  }
+  
+}
+
+
+
+/*************************************************************/
+/************************* Portfolio *************************/
+/*************************************************************/
+
+/** Portfolio Block **/
+.portfolio-text {
+  background-color: #9acfb7;
+}
+
+
+
+/*************************************************************/
+/**************************** Tabs ***************************/
+/*************************************************************/
+
+.nav-tabs > li > a:hover {
+  color: #9acfb7;
+}
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  color: #9acfb7;
+  border: 1px solid #9acfb7;
+}
+
+.nav-tabs.nav-justified > li > a:hover {
+  color: #9acfb7;
+}
+
+.nav-tabs.nav-justified > .active >a,
+.nav-tabs.nav-justified > .active > a:hover,
+.nav-tabs.nav-justified > .active > a:focus {
+  color: #9acfb7;
+  border: 1px solid #9acfb7;
+}
+
+
+
+/*************************************************************/
+/************************* Accordions ************************/
+/*************************************************************/
+
+.panel-heading {
+  border-color: #9acfb7;
+}
+
+
+
+/*************************************************************/
+/************************** Buttons **************************/
+/*************************************************************/
+
+.btn-primary {
+  background-color: #9acfb7;
+  border-color: #9acfb7;
+}
+
+
+
+/*************************************************************/
+/*********************** Progress Bars ***********************/
+/*************************************************************/
+
+.progress-bar-primary {
+  background-color: #9acfb7;
+}
+
+
+
+/*************************************************************/
+/******************** Colors & Backgrounds *******************/
+/*************************************************************/
+
+/** Text Colors **/
+.text-color-theme { color: #9acfb7; }
+
+/** Background Colors **/
+.bg-color-theme { background-color: #9acfb7; }
