@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SUN App</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="SUN">SUN</string>
+    <string name="S.U.N">S.U.N</string>
+    <string name="welcome">Welcome</string>
+    <string name="email">E-mail:</string>
+    <string name="password">Password</string>
+    <string name="Password2">Password:</string>
+    <string name="emailInput">Enter e-mail address</string>
+    <string name="login">Login</string>
+    <string name="signUp">Sign up</string>
+    <string name="title_activity_activity2">Activity2</string>
+    <string name="name">Name:</string>
+    <string name="surname">Surname:</string>
+    <string name="nameHint">Enter name</string>
+    <string name="surnameHint">Enter surname</string>
+    <string name="title_activity_activity3">Activity3</string>
+    <string name="SignUp">Sign Up</string>
+    <string name="Login">Login</string>
+    <string name="Logın">Logın</string>
+    <string name="SıgnUp">Sıgn Up</string>
+    <string name="frıends">frıends</string>
+    <string name="notıfıcatıons">notıfıcatıons</string>
+    <string name="namesurname">\"Name Surname\"</string>
+    <string name="myevents">my events</string>
+    <string name="interests">ınterests</string>
+    <string name="joınedevents">joıned events</string>
+    <string name="futureevents">future events</string>
+    <string name="contactınfo">contact ınfo</string>
+    <string name="title_activity_activity4">activity4</string>
+    <string name="title_activity_activity5">Activity5</string>
+    <string name="title_activity_activity6">Activity6</string>
+    <string name="title_activity_activity7">Activity7</string>
+    <string name="title_activity_activity8">Activity8</string>
+    <string name="myEvents">My Events</string>
+    <string name="event">Event</string>
+    <string name="createEvent">create event</string>
+    <string name="addIntrest">add ınterest</string>
+    <string name="interest">Interest</string>
+    <string name="Interests">Interests</string>
+    <string name="pastEvents">Past Events</string>
+    <string name="planned_events">Planned Events</string>
+    <string name="join_an_event">Joın an Event</string>
+    <string name="contact_info">Contact Info</string>
+    <string name="phone">Phone:</string>
+
+</resources>

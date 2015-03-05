@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.basri.sunapp" >
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/sun2"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SignUpPage"
+            android:label="Sign Up" >
+        </activity>
+        <activity
+            android:name=".ProfilePage"
+            android:label="Profile" >
+        </activity>
+        <activity
+            android:name=".MyEventsPage"
+            android:label="My Events" >
+        </activity>
+        <activity
+            android:name=".InterestsPage"
+            android:label="Interests" >
+        </activity>
+        <activity
+            android:name=".JoinedEventsPage"
+            android:label="Joined Events" >
+        </activity>
+        <activity
+            android:name=".FutureEventsPage"
+            android:label="Future Events" >
+        </activity>
+        <activity
+            android:name=".ContactInfoPage"
+            android:label="Contact Info" >
+        </activity>
+    </application>
+
+</manifest>
