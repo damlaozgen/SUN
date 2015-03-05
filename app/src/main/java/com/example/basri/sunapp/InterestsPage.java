@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-//  interests de interestler listview şeklinde. interest oluşturulduğunda ismiyle beraber yeni bir
+//  interests de  interestler listview şeklinde. interest oluşturulduğunda ismiyle beraber yeni bir
 // interest  oluşturulcak.
 
 public class InterestsPage extends ActionBarActivity {

@@ -13,7 +13,7 @@ import android.widget.ListView;
 
 
 
-// myevents de eventlerlistview şeklinde olucak. her bir event create edildiğinde listede
+// myevents de  eventlerlistview şeklinde olucak. her bir event create edildiğinde listede
 // oluşturalacak ve ismi verilecek. o eventin rowuna tıklandığında o evente gidecek.
 
 public class MyEventsPage extends Activity {

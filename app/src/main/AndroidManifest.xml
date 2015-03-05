@@ -42,7 +42,7 @@
         </activity>
         <activity
             android:name=".ContactInfoPage"
-            android:label="Contact Info" >
+            android:label="Contact Information" >
         </activity>
     </application>
 

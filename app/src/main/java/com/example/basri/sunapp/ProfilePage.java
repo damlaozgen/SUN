@@ -22,7 +22,7 @@ public class ProfilePage extends ActionBarActivity {
         button6.setOnClickListener( new OnClickListener() {
 
                                         public void onClick(View v) {
-           // Burada my events  butonuna basılıyor ve my events activitisine gidilliyor.
+           // Burada my events butonuna basılıyor ve my events activitisine gidilliyor.
 
             Intent intent = new Intent(v.getContext(), MyEventsPage.class);
             startActivityForResult(intent,0);
