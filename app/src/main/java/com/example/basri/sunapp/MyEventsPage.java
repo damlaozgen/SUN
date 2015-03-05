@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-
+ 
 
 
 // myevents de eventlerlistview şeklinde olucak. her bir event create edildiğinde listede
