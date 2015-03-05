@@ -22,7 +22,7 @@ public class SignUpPage extends ActionBarActivity {
         button3.setOnClickListener(new OnClickListener() {
 
                                        public void onClick(View v) {
-              // Burada e-mail,  name, surname ve password konrollerden geçerek database e işlenecek.
+              // Burada e-mail,   name, surname ve password konrollerden geçerek database e işlenecek.
 
               Intent intent = new Intent(v.getContext(), ProfilePage.class);
               startActivityForResult(intent,0);
