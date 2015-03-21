@@ -44,6 +44,10 @@
             android:name=".ContactInfoPage"
             android:label="Contact Information" >
         </activity>
+        <activity
+            android:name=".MainPage"
+            android:label="Main Page" >
+        </activity>
     </application>
 
 </manifest>

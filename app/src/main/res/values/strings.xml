@@ -47,5 +47,10 @@
     <string name="join_an_event">Joın an Event</string>
     <string name="contact_info">Contact Info</string>
     <string name="phone">Phone:</string>
+    <string name="title_activity_main_page">MainPage</string>
+    <string name="events">Events</string>
+    <string name="findFriends">Fınd Frıends</string>
+    <string name="bump">Bump</string>
+    <string name="newsFeed">News Feed</string>
 
 </resources>

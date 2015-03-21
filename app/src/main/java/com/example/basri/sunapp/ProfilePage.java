@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.content.Intent;
 
-
+// ilk sign up yapıldığında yani kayıt olunduğunda çıkan page. login yapıldığında bu değil main page gelecek
 public class ProfilePage extends ActionBarActivity {
 
     @Override

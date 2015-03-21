@@ -22,12 +22,24 @@ public class MainActivity extends ActionBarActivity {
         button2.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
-         // Burada sign up tuşuna basılıyor ve sign up activitisine gidiliyor.
+         // Burada sign up tuşuna basılıyor ve SignUpPage activitisine gidiliyor.
 
                 Intent intent = new Intent(v.getContext(), SignUpPage.class);
                 startActivityForResult(intent,0);
             }
         }
+        );
+
+        Button button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(new OnClickListener() {
+
+                                       public void onClick(View v) {
+          // Burada login tuşuna basılıyor ve MainPage activitisine gidiliyor.
+
+             Intent intent = new Intent(v.getContext(), MainPage.class);
+             startActivityForResult(intent,0);
+                                       }
+                                   }
         );
     }
      @Override
