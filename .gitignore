@@ -1,4 +1,7 @@
-<<<<<<< HEAD
+*.class
+*.cache
+.idea
+.idea/*
 .gradle
 /local.properties
 /.idea/workspace.xml
@@ -49,4 +52,3 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
->>>>>>> 6b89c59590dc00988d6be9ebca1ed659fb359627

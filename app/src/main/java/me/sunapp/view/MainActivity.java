@@ -1,4 +1,4 @@
-package com.example.basri.sunapp;
+package me.sunapp.view;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -6,17 +6,26 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Button;
 import android.view.View.OnClickListener;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import me.sunapp.R;
+import me.sunapp.client.SUNClient;
+import me.sunapp.client.SUNResponseHandler;
 
 
 public class MainActivity extends ActionBarActivity {
 
+    private EditText email;
+    private EditText password;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        email = (EditText)findViewById(R.id.login_email);
+        password = (EditText)findViewById(R.id.login_password);
 
         Button button2 = (Button) findViewById(R.id.button2);
         button2.setOnClickListener(new OnClickListener() {
@@ -33,14 +42,22 @@ public class MainActivity extends ActionBarActivity {
         Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new OnClickListener() {
 
-                                       public void onClick(View v) {
-          // Burada login tuşuna basılıyor ve MainPage activitisine gidiliyor.
+                                      public void onClick(final View v) {
+                                          SUNClient.getInstance().login(email.getText().toString(), password.getText().toString(), new SUNResponseHandler.SUNBooleanResponseHandler() {
+                                              @Override
+                                              public void actionCompleted() {
+                                                  Intent intent = new Intent(v.getContext(), MainPage.class);
+                                                  startActivityForResult(intent, 0);
+                                              }
 
-             Intent intent = new Intent(v.getContext(), MainPage.class);
-             startActivityForResult(intent,0);
-                                       }
-                                   }
-        );
+
+                                              @Override
+                                              public void actionFailed(Error error) {
+                                                  Toast.makeText(v.getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                                              }
+                                          });
+                                      }
+                                  });
     }
      @Override
     public boolean onCreateOptionsMenu(Menu menu) {

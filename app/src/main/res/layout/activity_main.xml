@@ -46,14 +46,12 @@
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:ems="10"
-        android:id="@+id/editText"
+        android:id="@+id/login_email"
         android:background="#ffffffff"
         android:hint="@string/emailInput"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/textView4"
-        android:layout_alignTop="@+id/imageView"
-        android:layout_alignBottom="@+id/textView3" />
+        android:layout_alignBottom="@+id/textView3"
+        android:layout_toRightOf="@+id/textView4"
+        android:layout_toEndOf="@+id/textView4" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -90,9 +88,9 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
-        android:id="@+id/editText2"
-        android:layout_alignLeft="@+id/editText"
-        android:layout_alignStart="@+id/editText"
+        android:id="@+id/login_password"
+        android:layout_alignLeft="@+id/login_email"
+        android:layout_alignStart="@+id/login_email"
         android:background="#ffffffff"
         android:layout_alignBottom="@+id/textView4"
         android:layout_alignTop="@+id/textView4"
@@ -105,7 +103,7 @@
         android:id="@+id/button"
         android:background="#ff48ff0e"
         android:layout_marginTop="39dp"
-        android:layout_below="@+id/editText2"
+        android:layout_below="@+id/login_password"
         android:layout_toRightOf="@+id/textView"
         android:layout_toEndOf="@+id/textView" />
 

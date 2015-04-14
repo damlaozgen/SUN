@@ -1,4 +1,4 @@
-package com.example.basri.sunapp;
+package me.sunapp.view;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.content.Intent;
+
+import me.sunapp.R;
 
 
 public class SignUpPage extends ActionBarActivity {

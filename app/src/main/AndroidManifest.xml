@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.basri.sunapp" >
+    package="me.sunapp" >
 
     <application
         android:allowBackup="true"
@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,35 +17,35 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SignUpPage"
+            android:name=".view.SignUpPage"
             android:label="Sign Up" >
         </activity>
         <activity
-            android:name=".ProfilePage"
+            android:name=".view.ProfilePage"
             android:label="Profile" >
         </activity>
         <activity
-            android:name=".MyEventsPage"
+            android:name=".view.MyEventsPage"
             android:label="My Events" >
         </activity>
         <activity
-            android:name=".InterestsPage"
+            android:name=".view.InterestsPage"
             android:label="Interests" >
         </activity>
         <activity
-            android:name=".JoinedEventsPage"
+            android:name=".view.JoinedEventsPage"
             android:label="Joined Events" >
         </activity>
         <activity
-            android:name=".FutureEventsPage"
+            android:name=".view.FutureEventsPage"
             android:label="Future Events" >
         </activity>
         <activity
-            android:name=".ContactInfoPage"
+            android:name=".view.ContactInfoPage"
             android:label="Contact Information" >
         </activity>
         <activity
-            android:name=".MainPage"
+            android:name=".view.MainPage"
             android:label="Main Page" >
         </activity>
     </application>
