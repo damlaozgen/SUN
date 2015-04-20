@@ -52,5 +52,7 @@
     <string name="findFriends">Fınd Frıends</string>
     <string name="bump">Bump</string>
     <string name="newsFeed">News Feed</string>
+    <string name="title_activity_find_friends_page">findFriendsPage</string>
+    <string name="foundFriends">friend10</string>
 
 </resources>

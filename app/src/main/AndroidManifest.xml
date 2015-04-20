@@ -48,6 +48,10 @@
             android:name=".view.MainPage"
             android:label="Main Page" >
         </activity>
+        <activity
+            android:name=".FindFriendsPage"
+            android:label="Find Friends" >
+        </activity>
     </application>
 
 </manifest>

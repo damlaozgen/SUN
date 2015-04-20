@@ -23,7 +23,7 @@ public class ProfilePage extends ActionBarActivity {
         Button button6 = (Button) findViewById(R.id.button6);
         button6.setOnClickListener( new OnClickListener() {
 
-                                        public void onClick(View v) {
+            public void onClick(View v) {
            // Burada my events butonuna basılıyor ve my events activitisine gidilliyor.
 
             Intent intent = new Intent(v.getContext(), MyEventsPage.class);
@@ -36,7 +36,7 @@ public class ProfilePage extends ActionBarActivity {
         Button button7 = (Button) findViewById(R.id.button7);
         button7.setOnClickListener( new OnClickListener() {
 
-                                        public void onClick(View v) {
+         public void onClick(View v) {
         // Burada interests butonuna basılıyor ve interests activitisine gidilliyor.
 
          Intent intent = new Intent(v.getContext(), InterestsPage.class);
@@ -49,7 +49,7 @@ public class ProfilePage extends ActionBarActivity {
         Button button8 = (Button) findViewById(R.id.button8);
         button8.setOnClickListener( new OnClickListener() {
 
-                                        public void onClick(View v) {
+         public void onClick(View v) {
          // Burada joined events butonuna basılıyor ve joined events activitisine gidilliyor.
 
          Intent intent = new Intent(v.getContext(), JoinedEventsPage.class);
@@ -62,7 +62,7 @@ public class ProfilePage extends ActionBarActivity {
         Button button9 = (Button) findViewById(R.id.button9);
         button9.setOnClickListener( new OnClickListener() {
 
-                                        public void onClick(View v) {
+         public void onClick(View v) {
          // Burada future events butonuna basılıyor ve future events activitisine gidilliyor.
 
          Intent intent = new Intent(v.getContext(), FutureEventsPage.class);
@@ -75,11 +75,24 @@ public class ProfilePage extends ActionBarActivity {
         Button button10 = (Button) findViewById(R.id.button10);
         button10.setOnClickListener( new OnClickListener() {
 
-                                        public void onClick(View v) {
+        public void onClick(View v) {
         // Burada contact info butonuna basılıyor ve contact info activitisine gidilliyor.
 
          Intent intent = new Intent(v.getContext(), ContactInfoPage.class);
          startActivityForResult(intent,0);
+                                        }
+                                    }
+
+        );
+
+        Button button5 = (Button) findViewById(R.id.button5);
+        button5.setOnClickListener( new OnClickListener() {
+
+         public void onClick(View v) {
+           // Burada notifications butonuna basılıyor ve my events activitisine gidilliyor.
+
+             Intent intent = new Intent(v.getContext(), MainPage.class);
+             startActivityForResult(intent,0);
                                         }
                                     }
 

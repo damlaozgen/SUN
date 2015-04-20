@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView5"
         android:textSize="30dp"
-        android:textColor="#ff12ff00"
+        android:textColor="#fffffefc"
         android:textStyle="bold"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
