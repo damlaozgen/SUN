@@ -1,5 +1,7 @@
 package me.sunapp.client;
 
+import com.loopj.android.http.AsyncHttpClient;
+
 import me.sunapp.model.*;
 
 import java.util.ArrayList;
@@ -9,7 +11,7 @@ import java.util.Date;
 public class SUNClient implements SUNActionPerformer {
     private static SUNClient instance;
     private ArrayList<Notification> currentUserNotifications;
-
+    private AsyncHttpClient httpClient
     private int dummyEventIdCounter;
     private Student currentUser;
     private Joinable dummyJoinable;

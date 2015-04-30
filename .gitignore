@@ -54,3 +54,6 @@ Temporary Items
 .apdisk
 
 SUN.iml
+
+*.pyc
+venv/
