@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import me.sunapp.R;
+import me.sunapp.client.SUNClient;
 
 
 // myevents de  eventlerlistview şeklinde olucak. her bir event create edildiğinde listede
