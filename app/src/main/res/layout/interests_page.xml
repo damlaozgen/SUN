@@ -5,7 +5,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.example.basri.sunapp.Activity5"
-    android:background="@drawable/background2">
+    android:background="@drawable/background"
+    android:id="@+id/">
 
     <Button
         android:layout_width="wrap_content"
@@ -14,7 +15,8 @@
         android:id="@+id/button20"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:background="#ffffffff" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -30,16 +32,16 @@
         android:layout_centerHorizontal="true" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:id="@+id/imageView12"
         android:background="@drawable/profile"
         android:layout_below="@+id/textView16"
-        android:layout_alignRight="@+id/textView16"
-        android:layout_alignEnd="@+id/textView16"
         android:layout_alignLeft="@+id/textView16"
         android:layout_alignStart="@+id/textView16"
-        android:layout_above="@+id/textView17" />
+        android:layout_above="@+id/textView17"
+        android:layout_alignRight="@+id/textView17"
+        android:layout_alignEnd="@+id/textView17" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -55,9 +57,10 @@
         android:layout_height="wrap_content"
         android:text="@string/addIntrest"
         android:id="@+id/button21"
+        android:background="#ffffffff"
         android:layout_above="@+id/textView16"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_toRightOf="@+id/textView23"
+        android:layout_toEndOf="@+id/textView23" />
     //
     <TextView
         android:layout_width="wrap_content"
@@ -80,4 +83,22 @@
         android:layout_below="@+id/textView23"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView21"
+        android:background="@drawable/line"
+        android:layout_below="@+id/imageView21"
+        android:layout_alignRight="@+id/listView2"
+        android:layout_alignEnd="@+id/listView2" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:id="@+id/imageView21"
+        android:background="@drawable/line2"
+        android:layout_alignTop="@+id/button20"
+        android:layout_toRightOf="@+id/button20"
+        android:layout_toEndOf="@+id/button20" />
 </RelativeLayout>
