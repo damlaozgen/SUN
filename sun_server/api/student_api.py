@@ -45,6 +45,14 @@ class StudentSearchView(APIView):
         return Response(serializer.data)
 
 
+class StudentFriendsView(APIView):
+    def get(self, request, **kwargs):
+        pk = kwargs['id']
+        s = Student.objects.get(pk=pk)
+        serializer = LiteStudentSerializer(s.friends, many=True)
+        return Response(serializer.data)
+
+
 class StudentViewSet(GenericViewSet,
                      mixins.CreateModelMixin,
                      mixins.RetrieveModelMixin,
