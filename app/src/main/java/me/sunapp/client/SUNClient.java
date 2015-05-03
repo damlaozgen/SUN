@@ -20,6 +20,7 @@ import me.sunapp.model.*;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 
 public class SUNClient implements SUNActionPerformer {
@@ -28,6 +29,7 @@ public class SUNClient implements SUNActionPerformer {
     private static SUNClient instance;
     private boolean loggedIn;
     private ArrayList<Notification> currentUserNotifications;
+    private HashMap<Integer, Student> studentCache;
     private AsyncHttpClient httpClient;
     private int dummyEventIdCounter;
     private Student currentUser;
@@ -40,6 +42,7 @@ public class SUNClient implements SUNActionPerformer {
         currentUserNotifications = new ArrayList<Notification>();
         userWaitList = new ArrayList<SUNResponseHandler.SUNBooleanResponseHandler>();
         httpClient = new AsyncHttpClient();
+        studentCache = new HashMap<Integer, Student>();
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ContextManager.getInstance().getAppContext());
         String accessToken = sharedPref.getString("accessToken", "");
         if(accessToken != null && accessToken.length() > 0){
@@ -68,8 +71,9 @@ public class SUNClient implements SUNActionPerformer {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
                     currentUser = Student.parseJSONObject(new JSONObject(new String(responseBody)));
+                    studentCache.put(currentUser.getId(), currentUser);
+                    fetchStudentFriends(currentUser, null);
                     Log.d("Client", "User fetched:"+currentUser.toString());
-                    Log.d("Client", "Size of waitlist:"+ userWaitList.size());
                     while(userWaitList.size() != 0){
                         SUNResponseHandler.SUNBooleanResponseHandler handler = userWaitList.remove(userWaitList.size()-1);
                         handler.actionCompleted();
@@ -123,6 +127,37 @@ public class SUNClient implements SUNActionPerformer {
                     handler.actionFailed(new Error(new String(responseBody)));
                 }
                 handler.actionCompleted();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                handler.actionFailed(new Error(error.getMessage()));
+            }
+        });
+    }
+
+    public void fetchStudentInfo(final Student s, final SUNResponseHandler.SUNBooleanResponseHandler handler){
+        if(studentCache.containsKey(s.getId())){
+            Student cached = studentCache.get(s.getId());
+            if(cached.getLastFetchDate() != null && new Date().getTime() - cached.getLastFetchDate().getTime() < 60 * 1000){
+                s.updateStudent(cached);
+                handler.actionCompleted();
+                return;
+            }
+        }
+        get("student/"+s.getId()+"/", null, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    Student newStudent = Student.parseJSONObject(new JSONObject(new String(responseBody)));
+                    Log.d("Client", "Student info fetched:" + newStudent.toString());
+                    s.updateStudent(newStudent);
+                    studentCache.put(s.getId(), s);
+                    handler.actionCompleted();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    handler.actionFailed(new Error(e.getMessage()));
+                }
             }
 
             @Override
@@ -230,9 +265,31 @@ public class SUNClient implements SUNActionPerformer {
     }
 
     @Override
-    public void searchUser(String keyword, SUNResponseHandler.SUNStudentListHandler handler) {
-        System.out.println("Warning! Search does not use the given keyword");
-        handler.actionCompleted(dummyUserList);
+    public void searchUser(String keyword, final SUNResponseHandler.SUNStudentListHandler handler) {
+        get("student/search/"+keyword, null, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    JSONArray list = new JSONArray(new String(responseBody));
+                    ArrayList<Student> alist = new ArrayList<Student>(list.length());
+                    for(int i = 0; i < list.length(); i++){
+                        Student s = Student.parseJSONObject(list.getJSONObject(i));
+                        if(s != null && s.getId() != currentUser.getId()){
+                            alist.add(s);
+                        }
+                    }
+                    handler.actionCompleted(alist);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    handler.actionFailed(new Error(e.getMessage()));
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                handler.actionFailed(new Error(error.getMessage()));
+            }
+        });
     }
 
     public void fetchJoinableList(SUNResponseHandler.SUNJoinableListHandler handler){
@@ -268,6 +325,38 @@ public class SUNClient implements SUNActionPerformer {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 handler.actionFailed(new Error(error.getMessage()));
+            }
+        });
+    }
+
+    public void fetchStudentFriends(final Student s, final SUNResponseHandler.SUNBooleanResponseHandler handler){
+        get("student/"+s.getId()+"/friends", null, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                s.getFriends().clear();
+                try {
+                    JSONArray json = new JSONArray(new String(responseBody));
+                    for(int i = 0; i < json.length(); i++){
+                        Student parsed = Student.parseJSONObject(json.getJSONObject(i));
+                        if(parsed != null){
+                            s.getFriends().add(parsed);
+                        }
+                    }
+                    if(handler != null){
+                        handler.actionCompleted();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    if(handler != null)
+                        handler.actionFailed(new Error(e.getMessage()));
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                if(handler != null){
+                    handler.actionFailed(new Error(error.getMessage()));
+                }
             }
         });
     }
