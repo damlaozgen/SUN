@@ -1,6 +1,7 @@
 from rest_framework import status
 from rest_framework import mixins
 from rest_framework.decorators import detail_route
+from rest_framework.fields import SerializerMethodField
 from rest_framework.response import Response
 from rest_framework.serializers import HyperlinkedModelSerializer
 from rest_framework.serializers import ModelSerializer
@@ -35,10 +36,14 @@ class JoinableDetailSerializer(ModelSerializer):
 class EventSerializer(HyperlinkedModelSerializer):
     students = LiteStudentSerializer(many=True)
     joinable = LiteJoinableSerializer()
+    creator = SerializerMethodField()
 
     class Meta:
         model = Event
-        fields = ('id', 'name', 'info', 'date', 'students', 'joinable')
+        fields = ('id', 'creator', 'name', 'info', 'date', 'students', 'joinable')
+
+    def get_creator(self, object):
+        return object.owner.pk
 
 
 class EventViewSet(ModelViewSet):
