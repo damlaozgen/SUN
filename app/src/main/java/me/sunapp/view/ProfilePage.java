@@ -2,6 +2,7 @@ package me.sunapp.view;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -9,17 +10,33 @@ import android.view.View;
 import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.content.Intent;
+import android.widget.Toast;
 
 import me.sunapp.R;
+import me.sunapp.client.SUNClient;
+import me.sunapp.client.SUNResponseHandler;
+import me.sunapp.model.Student;
 
 // ilk sign up yapıldığında yani kayıt olunduğunda çıkan page. login yapıldığında bu değil main page gelecek
 public class ProfilePage extends ActionBarActivity {
-
+    private Student selectedStudent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_page);
+        selectedStudent = Student.createStudentWithId(getIntent().getExtras().getInt("student_id"));
+        Log.d("asdfasdf", "Requesting fetch:" +selectedStudent.toString());
+        SUNClient.getInstance().fetchStudentInfo(selectedStudent, new SUNResponseHandler.SUNBooleanResponseHandler() {
+            @Override
+            public void actionCompleted() {
+                fillProfile();
+            }
 
+            @Override
+            public void actionFailed(Error error) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
         Button button6 = (Button) findViewById(R.id.button6);
         button6.setOnClickListener( new OnClickListener() {
 
@@ -120,5 +137,9 @@ public class ProfilePage extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void fillProfile(){
+        Log.d("asdfasdf", selectedStudent.toString());
     }
 }

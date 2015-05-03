@@ -72,8 +72,8 @@ public class MainPage extends ActionBarActivity {
             SUNClient.getInstance().waitCurrentUser(new SUNResponseHandler.SUNBooleanResponseHandler() {
                 @Override
                 public void actionCompleted() {
-                    ContextManager.getInstance().setStudentForDetail(SUNClient.getInstance().getCurrentUser());
                     Intent i = new Intent(MainPage.this, FutureEventsPage.class);
+                    i.putExtra("student_id", SUNClient.getInstance().getCurrentUser().getId());
                     startActivity(i);
                 }
 
@@ -83,8 +83,8 @@ public class MainPage extends ActionBarActivity {
                 }
             });
         }else{
-            ContextManager.getInstance().setStudentForDetail(SUNClient.getInstance().getCurrentUser());
             Intent i = new Intent(MainPage.this, FutureEventsPage.class);
+            i.putExtra("student_id", SUNClient.getInstance().getCurrentUser().getId());
             startActivity(i);
         }
 
