@@ -26,24 +26,13 @@ import me.sunapp.model.Student;
 
 
 public class MainPage extends ActionBarActivity {
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_page);
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
         ImageLoader.getInstance().init(config);
-        Button button14 = (Button) findViewById(R.id.button14);
-        button14.setOnClickListener(new View.OnClickListener() {
-
-         public void onClick(View v) {
-         // Burada find friends tuşuna basılıyor ve SignUpPage activitisine gidiliyor.
-
-          //Intent intent = new Intent(v.getContext(), FindFriendsPage.class);
-          //startActivityForResult(intent,0);
-                                       }
-                                   }
-        );
         fetchFeed();
     }
 
