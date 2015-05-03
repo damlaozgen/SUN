@@ -6,6 +6,7 @@ class Student(models.Model):
     user = models.ForeignKey(User)
     avatar = models.CharField(max_length=512, null=True, blank=True)
     contact_info = models.TextField(null=True, blank=True)
+    friends = models.ManyToManyField('self', symmetrical=False)
 
     def __str__(self):
         full_name = self.user.get_full_name()
