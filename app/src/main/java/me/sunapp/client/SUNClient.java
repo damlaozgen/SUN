@@ -1,17 +1,33 @@
 package me.sunapp.client;
 
-import com.loopj.android.http.AsyncHttpClient;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.apache.http.Header;
+import org.apache.http.entity.StringEntity;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import me.sunapp.ContextManager;
 import me.sunapp.model.*;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 
 
 public class SUNClient implements SUNActionPerformer {
+    private final static String BASE_URL = "http://10.0.2.2:8000/api/v1/";
+
     private static SUNClient instance;
+    private boolean loggedIn;
     private ArrayList<Notification> currentUserNotifications;
-    private AsyncHttpClient httpClient
+    private AsyncHttpClient httpClient;
     private int dummyEventIdCounter;
     private Student currentUser;
     private Joinable dummyJoinable;
@@ -20,7 +36,14 @@ public class SUNClient implements SUNActionPerformer {
     private SUNClient(){
         // Private constructor for singleton
         currentUserNotifications = new ArrayList<Notification>();
-
+        httpClient = new AsyncHttpClient();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ContextManager.getInstance().getAppContext());
+        String accessToken = sharedPref.getString("accessToken", "");
+        if(accessToken != null && accessToken.length() > 0){
+            httpClient.addHeader("Authorization", "Token "+accessToken);
+            loggedIn = true;
+            fetchCurrentUser();
+        }
         dummyEventIdCounter = 1;
         dummyJoinable = new Course(1, "CS 101", "Introduction to Programming");
 
@@ -36,7 +59,25 @@ public class SUNClient implements SUNActionPerformer {
         return instance;
     }
 
-    public void login(String email, String password, SUNResponseHandler.SUNBooleanResponseHandler handler){
+    private void fetchCurrentUser(){
+        get("student/self/", null, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    currentUser = Student.parseJSONObject(new JSONObject(new String(responseBody)));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+    }
+
+    public void login(String email, String password, final SUNResponseHandler.SUNBooleanResponseHandler handler){
         if(email == null || email.length() == 0){
             handler.actionFailed(new Error("Please enter your email address"));
             return;
@@ -45,34 +86,36 @@ public class SUNClient implements SUNActionPerformer {
             handler.actionFailed(new Error("Please enter your password"));
             return;
         }
-        if(email.equals(password)){
-            // Generating dummy data
-            currentUser = new Student(1, "test@mail.com", password, "Test User",
-                    "https://forum.codoh.com/images/avatars/avatar-blank.jpg", "Contact Info");
+        RequestParams params = new RequestParams();
+        params.put("username", email);
+        params.put("password", password);
+        post("login", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.d("Client", new String(responseBody));
+                try {
+                    JSONObject token = new JSONObject(new String(responseBody));
+                    String accessToken = token.getString("token");
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ContextManager.getInstance().getAppContext());
+                    sharedPref.edit().putString("accessToken", accessToken).apply();
+                    httpClient.addHeader("Authorization", "Token " + accessToken);
+                    loggedIn = true;
+                    fetchCurrentUser();
+                    //new PushManager().handlePushRegistration();
+                } catch (JSONException e) {
+                    handler.actionFailed(new Error(new String(responseBody)));
+                }
+                handler.actionCompleted();
+            }
 
-            Event dummyEvent = new Event(dummyEventIdCounter++, "First Test Event", new Date(), dummyJoinable, "Test Event Information");
-            currentUser.getEvents().add(dummyEvent);
-            dummyEvent.getJoinedStudents().add(currentUser);
-
-            Student dummyEventUser = new Student(3, "dummy@mail.com", null, "Event Goer",
-                    "http://tux.crystalxp.net/png/caporal-tux-capo-5832.png", "Goes to Events");
-            dummyUserList.add(dummyEventUser);
-            dummyEventUser.getEvents().add(dummyEvent);
-            dummyEvent.getJoinedStudents().add(dummyEventUser);
-
-            Student dummyFriend = new Student(2, "friend@mail.com", null, "Dummy Friend",
-                    "http://gravatar.com/avatar/c71c38340fc94601738c4d0c794cca36?s=512", "Friend contact info");
-            dummyUserList.add(dummyFriend);
-            dummyFriend.getFriends().add(currentUser);
-            currentUser.getFriends().add(dummyFriend);
-
-            handler.actionCompleted();
-        }else{
-            handler.actionFailed(new Error("Login failed! If you enter the same string on both username and password, then I can login"));
-        }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                handler.actionFailed(new Error(error.getMessage()));
+            }
+        });
     }
     @Override
-    public void createEvent(String name, Date date, Joinable joinable, String eventInfo, SUNResponseHandler.SUNEventResponseHandler handler) {
+    public void createEvent(final String name, final Date date, final Joinable joinable, final String eventInfo, final SUNResponseHandler.SUNEventResponseHandler handler) {
         if(name == null || name.length() == 0){
             handler.actionFailed(new Error("Name of the Event cannot be null"));
             return;
@@ -86,10 +129,31 @@ public class SUNClient implements SUNActionPerformer {
             handler.actionFailed(new Error("A Joinable must be given to create an event"));
             return;
         }
-        Event e = new Event(dummyEventIdCounter++, name, date, joinable, eventInfo);
-        e.getJoinedStudents().add(currentUser);
-        currentUser.getEvents().add(e);
-        handler.actionCompleted(e);
+        RequestParams params = new RequestParams();
+        params.put("joinable", joinable.getId());
+        params.put("name", name);
+        params.put("date", date.toString());
+        params.put("info", eventInfo);
+        post("event/", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Event e;
+                try {
+                    e = Event.parseJSONObject(new JSONObject(new String(responseBody)));
+                    e.getJoinedStudents().add(currentUser);
+                    currentUser.getEvents().add(e);
+                    handler.actionCompleted(e);
+                } catch (JSONException e1) {
+                    e1.printStackTrace();
+                    handler.actionFailed(new Error(e1.getMessage()));
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                handler.actionFailed(new Error(error.getMessage()));
+            }
+        });
     }
 
     @Override
@@ -162,7 +226,31 @@ public class SUNClient implements SUNActionPerformer {
         return currentUser;
     }
 
-    public Joinable getDummyJoinable() {
-        return dummyJoinable;
+    public boolean isLoggedIn(){
+        return loggedIn;
+    }
+
+    public void fetchStudentEvents(Student s){
+        
+    }
+
+    private void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+        httpClient.get(getAbsoluteUrl(url), params, responseHandler);
+    }
+
+    private void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+        httpClient.post(getAbsoluteUrl(url), params, responseHandler);
+    }
+    private void post(String url, JSONObject entity, AsyncHttpResponseHandler responseHandler){
+        try {
+            httpClient.post(ContextManager.getInstance().getAppContext(), getAbsoluteUrl(url), new StringEntity(entity.toString()), "application/json", responseHandler);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    protected static String getAbsoluteUrl(String relativeUrl) {
+        return BASE_URL + relativeUrl;
     }
 }

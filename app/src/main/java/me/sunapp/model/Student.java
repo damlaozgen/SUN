@@ -1,5 +1,8 @@
 package me.sunapp.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class Student extends User{
@@ -53,5 +56,19 @@ public class Student extends User{
                 ", interests=" + interests +
                 ", points=" + points +
                 "} ";
+    }
+
+    public static Student parseJSONObject(JSONObject obj){
+        try {
+            int id = obj.getInt("id");
+            String avatar = obj.getString("avatar");
+            String name = obj.getString("name");
+            String contact_info = obj.getString("contact_info");
+            String email = obj.getString("email");
+            return new Student(id, email, null, name, avatar, contact_info);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

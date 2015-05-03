@@ -3,6 +3,7 @@ package me.sunapp.view;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,9 +12,14 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.Date;
+
+import me.sunapp.ContextManager;
 import me.sunapp.R;
 import me.sunapp.client.SUNClient;
 import me.sunapp.client.SUNResponseHandler;
+import me.sunapp.model.Course;
+import me.sunapp.model.Event;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -24,6 +30,8 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ContextManager.prepare(this);
+        ContextManager.getInstance().setCurrentActivity(this);
         email = (EditText)findViewById(R.id.login_email);
         password = (EditText)findViewById(R.id.login_password);
 
@@ -46,8 +54,7 @@ public class MainActivity extends ActionBarActivity {
                                           SUNClient.getInstance().login(email.getText().toString(), password.getText().toString(), new SUNResponseHandler.SUNBooleanResponseHandler() {
                                               @Override
                                               public void actionCompleted() {
-                                                  Intent intent = new Intent(v.getContext(), MainPage.class);
-                                                  startActivityForResult(intent, 0);
+                                                  showMainPage();
                                               }
 
 
@@ -58,6 +65,8 @@ public class MainActivity extends ActionBarActivity {
                                           });
                                       }
                                   });
+
+        checkLogin();
     }
      @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -81,5 +90,14 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    private void checkLogin(){
+        if(SUNClient.getInstance().isLoggedIn()){
+            showMainPage();
+        }
+    }
+    private void showMainPage(){
+        Intent intent = new Intent(getApplicationContext(), MainPage.class);
+        startActivityForResult(intent, 0);
     }
 }

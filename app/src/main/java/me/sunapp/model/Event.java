@@ -1,5 +1,12 @@
 package me.sunapp.model;
 
+import org.apache.http.impl.cookie.DateParseException;
+import org.apache.http.impl.cookie.DateUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -79,5 +86,26 @@ public class Event {
 
     public void setEventInfo(String eventInfo) {
         this.eventInfo = eventInfo;
+    }
+
+    public static Event parseJSONObject(JSONObject obj){
+        try {
+            int id = obj.getInt("id");
+            String name = obj.getString("name");
+            String info = obj.getString("info");
+            Joinable j = Joinable.parseJSONObject(obj.getJSONObject("joinable"));
+            String dStr = obj.getString("date");
+            Date d;
+            try {
+                d = DateUtils.parseDate(dStr);
+            } catch (DateParseException e) {
+                e.printStackTrace();
+                d = new Date();
+            }
+            return new Event(id, name, d, j, info);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

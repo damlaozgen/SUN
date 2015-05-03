@@ -26,8 +26,8 @@ public class MainPage extends ActionBarActivity {
          public void onClick(View v) {
          // Burada find friends tuşuna basılıyor ve SignUpPage activitisine gidiliyor.
 
-          Intent intent = new Intent(v.getContext(), FindFriendsPage.class);
-          startActivityForResult(intent,0);
+          //Intent intent = new Intent(v.getContext(), FindFriendsPage.class);
+          //startActivityForResult(intent,0);
                                        }
                                    }
         );
