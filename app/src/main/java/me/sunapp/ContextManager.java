@@ -2,9 +2,12 @@ package me.sunapp;
 import android.app.Activity;
 import android.content.Context;
 
+import me.sunapp.model.Student;
+
 public class ContextManager {
     private static ContextManager instance;
     private Context appContext;
+    private Student detailStudent;
 
     private Activity currentActivity;
 
@@ -37,6 +40,13 @@ public class ContextManager {
 
     public void setCurrentActivity(Activity currentActivity) {
         this.currentActivity = currentActivity;
+    }
+
+    public void setStudentForDetail(Student s){
+        detailStudent = s;
+    }
+    public Student getUserForDetail(){
+        return detailStudent;
     }
 }
 

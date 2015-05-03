@@ -3,23 +3,36 @@ package me.sunapp.view;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
+import java.util.ArrayList;
+
+import me.sunapp.ContextManager;
 import me.sunapp.R;
+import me.sunapp.client.SUNClient;
+import me.sunapp.client.SUNResponseHandler;
+import me.sunapp.model.Event;
+import me.sunapp.model.Student;
 
 
 public class MainPage extends ActionBarActivity {
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_page);
-
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
+        ImageLoader.getInstance().init(config);
         Button button14 = (Button) findViewById(R.id.button14);
         button14.setOnClickListener(new View.OnClickListener() {
 
@@ -31,13 +44,7 @@ public class MainPage extends ActionBarActivity {
                                        }
                                    }
         );
-
-        String[] events = {"event1", "event2", "event3", "event4", "event5", "event6", "event7", "event8", "ebent9", "event10"};
-
-        ListView listview = (ListView) findViewById(R.id.listView5);
-        listview.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item, R.id.events_name, events));
-
-
+        fetchFeed();
     }
 
 
@@ -61,5 +68,36 @@ public class MainPage extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void fetchFeed(){
+
+    }
+    public void showFindFriends(View v){
+        Intent i = new Intent(this, FindFriendsPage.class);
+        startActivity(i);
+    }
+
+    public void showFutureEvents(View v){
+        if(SUNClient.getInstance().getCurrentUser() == null){
+            SUNClient.getInstance().waitCurrentUser(new SUNResponseHandler.SUNBooleanResponseHandler() {
+                @Override
+                public void actionCompleted() {
+                    ContextManager.getInstance().setStudentForDetail(SUNClient.getInstance().getCurrentUser());
+                    Intent i = new Intent(MainPage.this, FutureEventsPage.class);
+                    startActivity(i);
+                }
+
+                @Override
+                public void actionFailed(Error error) {
+                    Toast.makeText(getApplicationContext(), "Unable to fetch user info", Toast.LENGTH_LONG).show();
+                }
+            });
+        }else{
+            ContextManager.getInstance().setStudentForDetail(SUNClient.getInstance().getCurrentUser());
+            Intent i = new Intent(MainPage.this, FutureEventsPage.class);
+            startActivity(i);
+        }
+
     }
 }

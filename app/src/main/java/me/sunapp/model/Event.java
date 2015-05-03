@@ -97,8 +97,9 @@ public class Event {
             String dStr = obj.getString("date");
             Date d;
             try {
-                d = DateUtils.parseDate(dStr);
-            } catch (DateParseException e) {
+                SimpleDateFormat parserSDF=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                d = parserSDF.parse(dStr);
+            } catch (ParseException e) {
                 e.printStackTrace();
                 d = new Date();
             }

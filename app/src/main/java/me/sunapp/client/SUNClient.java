@@ -10,6 +10,7 @@ import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
 import org.apache.http.entity.StringEntity;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,7 +23,7 @@ import java.util.Date;
 
 
 public class SUNClient implements SUNActionPerformer {
-    private final static String BASE_URL = "http://10.0.2.2:8000/api/v1/";
+    private final static String BASE_URL = "http://128.199.57.186:8000/api/v1/";
 
     private static SUNClient instance;
     private boolean loggedIn;
@@ -33,9 +34,11 @@ public class SUNClient implements SUNActionPerformer {
     private Joinable dummyJoinable;
     private ArrayList<Joinable> dummyJoinableList;
     private ArrayList<Student> dummyUserList;
+    private ArrayList<SUNResponseHandler.SUNBooleanResponseHandler> userWaitList;
     private SUNClient(){
         // Private constructor for singleton
         currentUserNotifications = new ArrayList<Notification>();
+        userWaitList = new ArrayList<SUNResponseHandler.SUNBooleanResponseHandler>();
         httpClient = new AsyncHttpClient();
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ContextManager.getInstance().getAppContext());
         String accessToken = sharedPref.getString("accessToken", "");
@@ -65,16 +68,30 @@ public class SUNClient implements SUNActionPerformer {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
                     currentUser = Student.parseJSONObject(new JSONObject(new String(responseBody)));
+                    Log.d("Client", "User fetched:"+currentUser.toString());
+                    Log.d("Client", "Size of waitlist:"+ userWaitList.size());
+                    while(userWaitList.size() != 0){
+                        SUNResponseHandler.SUNBooleanResponseHandler handler = userWaitList.remove(userWaitList.size()-1);
+                        handler.actionCompleted();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    while(userWaitList.size() != 0){
+                        SUNResponseHandler.SUNBooleanResponseHandler handler = userWaitList.remove(userWaitList.size()-1);
+                        handler.actionFailed(new Error(e.getMessage()));
+                    }
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
+                Log.e("Client", "Fetch user failed", error);
             }
         });
+    }
+
+    public void waitCurrentUser(SUNResponseHandler.SUNBooleanResponseHandler handler){
+        userWaitList.add(handler);
     }
 
     public void login(String email, String password, final SUNResponseHandler.SUNBooleanResponseHandler handler){
@@ -230,8 +247,29 @@ public class SUNClient implements SUNActionPerformer {
         return loggedIn;
     }
 
-    public void fetchStudentEvents(Student s){
-        
+    public void fetchStudentEvents(final Student s, final SUNResponseHandler.SUNBooleanResponseHandler handler){
+        String url = "student/"+s.getId()+"/events";
+        get(url, null, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    JSONArray array = new JSONArray(new String(responseBody));
+                    s.getEvents().clear();
+                    for(int i = 0; i<array.length(); i++){
+                        s.getEvents().add(Event.parseJSONObject(array.getJSONObject(i)));
+                    }
+                    handler.actionCompleted();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    handler.actionFailed(new Error(e.getMessage()));
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                handler.actionFailed(new Error(error.getMessage()));
+            }
+        });
     }
 
     private void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {

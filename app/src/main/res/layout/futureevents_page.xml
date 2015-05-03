@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="&quot; &quot; points"
-        android:id="@+id/textView32"
+        android:id="@+id/future_events_points"
         android:textColor="@android:color/black"
         android:textStyle="bold"
         android:textSize="25dp"
@@ -30,23 +30,20 @@
         android:layout_centerHorizontal="true" />
     //
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView14"
-        android:background="@drawable/profile"
-        android:layout_below="@+id/textView32"
-        android:layout_alignLeft="@+id/textView32"
-        android:layout_alignStart="@+id/textView32"
-        android:layout_alignRight="@+id/textView32"
-        android:layout_alignEnd="@+id/textView32"
-        android:layout_above="@+id/textView33" />
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:id="@+id/future_events_avatar"
+        android:layout_below="@+id/future_events_points"
+        android:layout_above="@+id/future_events_name"
+        android:src="@drawable/profile"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/namesurname"
-        android:id="@+id/textView33"
+        android:id="@+id/future_events_name"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
@@ -60,7 +57,7 @@
         android:textSize="25dp"
         android:textColor="#ff007c12"
         android:textIsSelectable="false"
-        android:layout_below="@+id/textView33"
+        android:layout_below="@+id/future_events_name"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -76,7 +73,7 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView4"
+        android:id="@+id/future_events_list"
         android:layout_below="@+id/textView34"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />

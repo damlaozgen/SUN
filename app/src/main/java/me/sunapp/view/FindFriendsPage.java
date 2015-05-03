@@ -1,26 +1,25 @@
 package me.sunapp.view;
 
-import android.support.v7.app.ActionBarActivity;
+
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import me.sunapp.R;
 
-
-public class FutureEventsPage extends ActionBarActivity {
-
+public class FindFriendsPage extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.futureevents_page);
+        setContentView(R.layout.findfriends_page);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //  Inflate  the   menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_activity7, menu);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_activity5, menu);
         return true;
     }
 

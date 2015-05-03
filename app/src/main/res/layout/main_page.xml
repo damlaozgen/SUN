@@ -14,15 +14,8 @@
         android:id="@+id/button13"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/findFriends"
-        android:id="@+id/button14"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentStart="true"
+        android:onClick="showFutureEvents" />
 
     <Button
         android:layout_width="wrap_content"
@@ -58,4 +51,13 @@
         android:layout_below="@+id/textView24"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Find Friends"
+        android:id="@+id/main_find_friends"
+        android:layout_above="@+id/textView24"
+        android:layout_centerHorizontal="true"
+        android:onClick="showFindFriends" />
 </RelativeLayout>
