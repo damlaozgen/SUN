@@ -17,6 +17,7 @@ public class Event {
     private Joinable joinable;
     private ArrayList<Student> joinedStudents;
     private String eventInfo;
+    private int creatorId;
 
     @Override
     public String toString() {
@@ -29,15 +30,24 @@ public class Event {
                 '}';
     }
 
-    public Event(int id, String name, Date date, Joinable joinable, String eventInfo) {
+    public Event(int id, int creatorId, String name, Date date, Joinable joinable, String eventInfo) {
         this.id = id;
         this.name = name;
         this.date = date;
+        this.creatorId = creatorId;
 
         this.joinable = joinable;
         this.eventInfo = eventInfo;
         joinedStudents = new ArrayList<Student>();
 
+    }
+
+    public int getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(int creatorId) {
+        this.creatorId = creatorId;
     }
 
     public int getId() {
@@ -95,6 +105,7 @@ public class Event {
             String info = obj.getString("info");
             Joinable j = Joinable.parseJSONObject(obj.getJSONObject("joinable"));
             String dStr = obj.getString("date");
+            int creatorId = obj.getInt("creator");
             Date d;
             try {
                 SimpleDateFormat parserSDF=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -103,7 +114,7 @@ public class Event {
                 e.printStackTrace();
                 d = new Date();
             }
-            return new Event(id, name, d, j, info);
+            return new Event(id, creatorId, name, d, j, info);
         } catch (JSONException e) {
             e.printStackTrace();
         }
