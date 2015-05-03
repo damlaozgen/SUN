@@ -13,13 +13,14 @@ from rest_framework.views import APIView
 from event.models import Event
 from event.models import Joinable
 from login.models import Student
-from login_api import LiteStudentSerializer
+from student_api import LiteStudentSerializer
+from student_api import StudentSerializer
 
 
 class LiteJoinableSerializer(ModelSerializer):
     class Meta:
         model = Joinable
-        fields = ('id', 'type', 'name')
+        fields = ('id', 'type', 'name', 'info')
 
 
 class JoinableDetailSerializer(ModelSerializer):
@@ -112,4 +113,11 @@ class JoinableEventListView(APIView):
         joinable = Joinable.objects.get(pk=id)
         events = Event.objects.filter(joinable=joinable)
         serializer = EventSerializer(events, many=True)
+        return Response(serializer.data)
+
+
+class StudentEventsView(APIView):
+    def get(self, request, **kwargs):
+        events = Student.objects.get(pk=kwargs['id']).joined_events
+        serializer = EventSerializer(events, many=True, context={'request': request})
         return Response(serializer.data)
