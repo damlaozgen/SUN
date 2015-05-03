@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="me.sunapp" >
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/sun2"
@@ -21,8 +23,7 @@
             android:name=".view.SignUpPage"
             android:label="Sign Up" >
         </activity>
-        <activity android:name=".view.FindFriendsPage">
-
+        <activity android:name=".view.FindFriendsPage" >
         </activity>
         <activity
             android:name=".view.ProfilePage"
@@ -55,6 +56,10 @@
         <activity
             android:name=".FindFriendsPage"
             android:label="Find Friends" >
+        </activity>
+        <activity
+            android:name=".view.FriendListPage"
+            android:label="@string/title_activity_friend_list_page" >
         </activity>
     </application>
 

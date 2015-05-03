@@ -4,11 +4,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Student extends User{
     private ArrayList<Student> friends;
     private ArrayList<Event> events;
     private ArrayList<Joinable> interests;
+    private Date lastFetchDate;
     private int points;
 
     public Student(int id, String email, String password, String name, String avatar, String contactInfo) {
@@ -50,6 +52,10 @@ public class Student extends User{
         this.points = points;
     }
 
+    public Date getLastFetchDate() {
+        return lastFetchDate;
+    }
+
     @Override
     public String toString() {
         return "Student{" + super.toString() +
@@ -58,14 +64,35 @@ public class Student extends User{
                 "} ";
     }
 
+    public void updateStudent(Student newStudent){
+        this.name = newStudent.getName();
+        this.password = newStudent.getPassword();
+        this.points = newStudent.getPoints();
+        this.email = newStudent.getEmail();
+        this.avatar = newStudent.getAvatar();
+        this.contactInfo = newStudent.getContactInfo();
+    }
+
+    public static Student createStudentWithId(int id){
+        return new Student(id, null, null, "Loading..", null, null);
+    }
+
     public static Student parseJSONObject(JSONObject obj){
         try {
             int id = obj.getInt("id");
             String avatar = obj.getString("avatar");
             String name = obj.getString("name");
-            String contact_info = obj.getString("contact_info");
-            String email = obj.getString("email");
-            return new Student(id, email, null, name, avatar, contact_info);
+            String contact_info = null;
+            if(obj.has("contact_info"))
+                contact_info = obj.getString("contact_info");
+
+            String email = null;
+            if(obj.has("email"))
+                email = obj.getString("email");
+
+            Student s = new Student(id, email, null, name, avatar, contact_info);
+            s.lastFetchDate = new Date();
+            return s;
         } catch (JSONException e) {
             e.printStackTrace();
         }
