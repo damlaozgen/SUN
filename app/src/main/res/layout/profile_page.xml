@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/notıfıcatıons"
-        android:id="@+id/button5"
+        android:id="@+id/profile_notification_button"
         android:background="#ffffffff"
         android:layout_above="@+id/imageView17"
         android:layout_toRightOf="@+id/imageView19"
@@ -32,12 +32,12 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="&quot; &quot; points"
-        android:id="@+id/textView11"
+        android:id="@+id/profile_points"
         android:textColor="@android:color/black"
         android:textStyle="bold"
         android:textSize="25dp"
         android:layout_marginTop="34dp"
-        android:layout_below="@+id/button5"
+        android:layout_below="@+id/profile_notification_button"
         android:layout_centerHorizontal="true" />
 
     <ImageView
@@ -45,19 +45,19 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageView10"
         android:background="@drawable/profile"
-        android:layout_below="@+id/textView11"
-        android:layout_alignLeft="@+id/textView11"
-        android:layout_alignStart="@+id/textView11"
-        android:layout_toLeftOf="@+id/button5"
-        android:layout_toStartOf="@+id/button5"
-        android:layout_above="@+id/textView12" />
+        android:layout_below="@+id/profile_points"
+        android:layout_alignLeft="@+id/profile_points"
+        android:layout_alignStart="@+id/profile_points"
+        android:layout_toLeftOf="@+id/profile_notification_button"
+        android:layout_toStartOf="@+id/profile_notification_button"
+        android:layout_above="@+id/profile_name" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/namesurname"
-        android:id="@+id/textView12"
+        android:id="@+id/profile_name"
         android:layout_centerVertical="true"
         android:layout_alignLeft="@+id/imageView10"
         android:layout_alignStart="@+id/imageView10" />
@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:text="@string/myevents"
         android:id="@+id/button6"
-        android:layout_below="@+id/textView12"
+        android:layout_below="@+id/profile_name"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
@@ -144,9 +144,9 @@
     <ImageView
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:id="@+id/imageView20"
+        android:id="@+id/profile_avatar"
         android:background="@drawable/profile"
-        android:layout_below="@+id/textView11"
+        android:layout_below="@+id/profile_points"
         android:layout_alignParentEnd="false"
         android:layout_alignWithParentIfMissing="false"
         android:layout_centerHorizontal="true" />

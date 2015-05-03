@@ -2,7 +2,6 @@ package me.sunapp.view;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,7 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.content.Intent;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import me.sunapp.R;
 import me.sunapp.client.SUNClient;
@@ -20,12 +23,25 @@ import me.sunapp.model.Student;
 // ilk sign up yapıldığında yani kayıt olunduğunda çıkan page. login yapıldığında bu değil main page gelecek
 public class ProfilePage extends ActionBarActivity {
     private Student selectedStudent;
+    private TextView name;
+    private TextView point;
+    private ImageView avatar;
+    private Button notificationButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_page);
+        name = (TextView)findViewById(R.id.profile_name);
+        point = (TextView)findViewById(R.id.profile_points);
+        avatar = (ImageView)findViewById(R.id.profile_avatar);
+        notificationButton = (Button)findViewById(R.id.profile_notification_button);
         selectedStudent = Student.createStudentWithId(getIntent().getExtras().getInt("student_id"));
-        Log.d("asdfasdf", "Requesting fetch:" +selectedStudent.toString());
+        if(selectedStudent.getId() != SUNClient.getInstance().getCurrentUser().getId()){
+            notificationButton.setVisibility(View.INVISIBLE);
+        }else{
+            notificationButton.setVisibility(View.VISIBLE);
+        }
         SUNClient.getInstance().fetchStudentInfo(selectedStudent, new SUNResponseHandler.SUNBooleanResponseHandler() {
             @Override
             public void actionCompleted() {
@@ -102,8 +118,7 @@ public class ProfilePage extends ActionBarActivity {
 
         );
 
-        Button button5 = (Button) findViewById(R.id.button5);
-        button5.setOnClickListener( new OnClickListener() {
+        notificationButton.setOnClickListener( new OnClickListener() {
 
          public void onClick(View v) {
            // Burada notifications butonuna basılıyor ve my events activitisine gidilliyor.
@@ -140,6 +155,8 @@ public class ProfilePage extends ActionBarActivity {
     }
 
     private void fillProfile(){
-        Log.d("asdfasdf", selectedStudent.toString());
+        name.setText(selectedStudent.getName());
+        point.setText(""+selectedStudent.getPoints());
+        ImageLoader.getInstance().displayImage(selectedStudent.getAvatar(), avatar);
     }
 }
