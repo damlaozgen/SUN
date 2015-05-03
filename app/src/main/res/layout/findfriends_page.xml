@@ -24,43 +24,45 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Name"
         android:ems="10"
-        android:id="@+id/editText8"
+        android:id="@+id/find_friends_search_bar"
         android:layout_marginTop="34dp"
         android:layout_below="@+id/textView25"
-        android:layout_centerHorizontal="true" />
+        android:hint="Name"
+        android:layout_toLeftOf="@+id/find_friends_search_button"
+        android:layout_toStartOf="@+id/find_friends_search_button" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:id="@+id/imageView16"
         android:background="@drawable/abc_ic_search_api_mtrl_alpha"
-        android:layout_alignBottom="@+id/editText8"
+        android:layout_alignBottom="@+id/find_friends_search_bar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/editText8"
-        android:layout_toStartOf="@+id/editText8"
-        android:layout_alignTop="@+id/editText8" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView17"
-        android:background="@drawable/sun"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_toLeftOf="@+id/find_friends_search_bar"
+        android:layout_toStartOf="@+id/find_friends_search_bar"
+        android:layout_alignTop="@+id/find_friends_search_bar" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView6"
+        android:id="@+id/find_friends_list"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/editText8"
-        android:layout_above="@+id/imageView17"
+        android:layout_below="@+id/find_friends_search_bar"
         android:background="#ffffffff"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        android:id="@+id/find_friends_search_button"
+        android:layout_alignBottom="@+id/find_friends_search_bar"
+        android:layout_alignRight="@+id/find_friends_list"
+        android:layout_alignEnd="@+id/find_friends_list"
+        android:onClick="search" />
 
 </RelativeLayout>
