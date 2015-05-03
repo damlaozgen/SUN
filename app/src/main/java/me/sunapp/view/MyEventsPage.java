@@ -29,7 +29,7 @@ public class MyEventsPage extends Activity {
 
         String[] events = {"event1", "event2", "event3", "event4", "event5", "event6", "event7", "event8", "event9", "event10"};
 
-        ListView listview = (ListView) findViewById(R.id.listView);
+        ListView listview = (ListView) findViewById(R.id.my_events_list);
         listview.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item, R.id.events_name, events));
     }
 
