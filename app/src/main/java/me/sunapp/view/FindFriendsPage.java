@@ -3,11 +3,13 @@ package me.sunapp.view;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -23,12 +25,22 @@ import me.sunapp.model.Student;
 public class FindFriendsPage extends Activity{
     EditText searchBar;
     ListView listView;
+    ArrayList<Student> currentItems;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.findfriends_page);
         searchBar = (EditText)findViewById(R.id.find_friends_search_bar);
         listView = (ListView)findViewById(R.id.find_friends_list);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Student s = currentItems.get(position);
+                Intent i = new Intent(FindFriendsPage.this, ProfilePage.class);
+                i.putExtra("student_id", s.getId());
+                startActivity(i);
+            }
+        });
     }
 
 
@@ -66,7 +78,7 @@ public class FindFriendsPage extends Activity{
             SUNClient.getInstance().searchUser(searchStr, new SUNResponseHandler.SUNStudentListHandler() {
                 @Override
                 public void actionCompleted(ArrayList<Student> students) {
-                    Log.d("asdf", students.toString());
+                    currentItems = students;
                     listView.setAdapter(new FriendListAdapter(students));
                     pd.dismiss();
                 }
