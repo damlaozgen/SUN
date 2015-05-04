@@ -5,7 +5,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.NFC" />
-    <uses-feature android:name="android.hardware.nfc" android:required="true" />
+
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -73,10 +76,16 @@
             android:name=".view.BumpActivity"
             android:label="@string/title_activity_bump" >
             <intent-filter>
-                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:mimeType="application/vnd.me.sunapp.android.beam"/>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="application/vnd.me.sunapp.android.beam" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".view.InterestDetailPage"
+            android:label="@string/title_activity_interest_detail_page" >
         </activity>
     </application>
 
