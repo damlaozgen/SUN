@@ -22,16 +22,16 @@
     <string name="title_activity_activity3">Activity3</string>
     <string name="SignUp">sign up</string>
     <string name="Login">login</string>
-    <string name="Logın">logın</string>
-    <string name="SıgnUp">sıgn up</string>
-    <string name="frıends">frıends</string>
-    <string name="notıfıcatıons">notıfıcatıons</string>
+    <string name="Logın">login</string>
+    <string name="SıgnUp">sign up</string>
+    <string name="frıends">friends</string>
+    <string name="notıfıcatıons">notifications</string>
     <string name="namesurname">\"same surname\"</string>
     <string name="myevents">own events</string>
-    <string name="interests">ınterests</string>
-    <string name="joınedevents">joıned events</string>
+    <string name="interests">interests</string>
+    <string name="joınedevents">joined events</string>
     <string name="futureevents">future events</string>
-    <string name="contactınfo">contact ınfo</string>
+    <string name="contactınfo">contact info</string>
     <string name="title_activity_activity4">activity4</string>
     <string name="title_activity_activity5">Activity5</string>
     <string name="title_activity_activity6">Activity6</string>
@@ -40,17 +40,17 @@
     <string name="myEvents">Own Events</string>
     <string name="event">Event</string>
     <string name="createEvent">create event</string>
-    <string name="addIntrest">add ınterest</string>
+    <string name="addIntrest">add interest</string>
     <string name="interest">Interest</string>
     <string name="Interests">Interests</string>
     <string name="pastEvents">Past Events</string>
     <string name="planned_events">planned events</string>
-    <string name="join_an_event">joın an event</string>
+    <string name="join_an_event">join an event</string>
     <string name="contact_info">contact info</string>
     <string name="phone">Phone:</string>
     <string name="title_activity_main_page">MainPage</string>
     <string name="events">events</string>
-    <string name="findFriends">fınd frıends</string>
+    <string name="findFriends">find friends</string>
     <string name="bump">bump!</string>
     <string name="newsFeed">news feed</string>
     <string name="title_activity_find_friends_page">findFriendsPage</string>
@@ -59,5 +59,6 @@
     <string name="title_activity_event_detail_page">EventDetailPage</string>
     <string name="title_activity_create_event_page">CreateEventPage</string>
     <string name="title_activity_bump">BumpActivity</string>
+    <string name="title_activity_interest_detail_page">InterestDetailPage</string>
 
 </resources>
