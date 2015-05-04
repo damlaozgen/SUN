@@ -15,4 +15,5 @@ public interface SUNActionPerformer {
     public void addFriend(Student friend, SUNResponseHandler.SUNBooleanResponseHandler handler);
     public void removeFriend(Student friend, SUNResponseHandler.SUNBooleanResponseHandler handler);
     public void searchUser(String keyword, SUNResponseHandler.SUNStudentListHandler handler);
+    public void fetchJoinableEvents(Joinable j, SUNResponseHandler.SUNEventListHandler handler);
 }

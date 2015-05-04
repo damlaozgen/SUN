@@ -16,6 +16,9 @@ public abstract class SUNResponseHandler {
     public static abstract class SUNEventResponseHandler extends SUNResponseHandler{
         public abstract void actionCompleted(Event event);
     }
+    public static abstract class SUNEventListHandler extends SUNResponseHandler{
+        public abstract void actionCompleted(ArrayList<Event> events);
+    }
 
     public static abstract class SUNJoinableListHandler extends SUNResponseHandler{
         public abstract void actionCompleted(ArrayList<Joinable> joinables);

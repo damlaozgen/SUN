@@ -220,14 +220,30 @@ public class SUNClient implements SUNActionPerformer {
     }
 
     @Override
-    public void getJoinable(int id, SUNResponseHandler.SUNJoinableDetailHandler handler) {
-        for(Joinable j : dummyJoinableList){
-            if(j.getId() == id){
-                handler.actionCompleted(j);
-                return;
-            }
+    public void getJoinable(int id, final SUNResponseHandler.SUNJoinableDetailHandler handler) {
+        Joinable j = Joinable.getFromCache(id);
+        if(j != null){
+            handler.actionCompleted(j);
+            return;
         }
-        handler.actionFailed(new Error("Could not find a Joinable with the given ID"));
+        get("joinable/"+id+"/", null, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    JSONObject obj = new JSONObject(new String(responseBody));
+                    Joinable j = Joinable.parseJSONObject(obj);
+                    handler.actionCompleted(j);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    handler.actionFailed(new Error(e.getMessage()));
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                handler.actionFailed(new Error(error.getMessage()));
+            }
+        });
     }
 
     @Override
@@ -345,6 +361,31 @@ public class SUNClient implements SUNActionPerformer {
                         }
                     }
                     handler.actionCompleted(alist);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    handler.actionFailed(new Error(e.getMessage()));
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                handler.actionFailed(new Error(error.getMessage()));
+            }
+        });
+    }
+
+    @Override
+    public void fetchJoinableEvents(Joinable j, final SUNResponseHandler.SUNEventListHandler handler) {
+        get("joinable/"+j.getId()+"/events/", null, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    JSONArray list = new JSONArray(new String(responseBody));
+                    ArrayList<Event>resp = new ArrayList<Event>();
+                    for(int i = 0; i<list.length();i++){
+                        resp.add(Event.parseJSONObject(list.getJSONObject(i)));
+                    }
+                    handler.actionCompleted(resp);
                 } catch (JSONException e) {
                     e.printStackTrace();
                     handler.actionFailed(new Error(e.getMessage()));
