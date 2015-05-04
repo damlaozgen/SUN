@@ -18,21 +18,15 @@ import me.sunapp.model.Student;
 
 public class ContactInfoPage extends ActionBarActivity {
     Student selectedStudent;
-    TextView name;
-    TextView point;
     TextView email;
     TextView contactInfo;
-    ImageView avatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contactinfo_page);
-        name = (TextView)findViewById(R.id.name);
-        point = (TextView)findViewById(R.id.points);
-        email = (TextView)findViewById(R.id.email_text);
+        email = (TextView)findViewById(R.id.email);
         contactInfo = (TextView)findViewById(R.id.contact_info);
-        avatar = (ImageView)findViewById(R.id.avatar);
 
         selectedStudent = Student.createStudentWithId(getIntent().getExtras().getInt("student_id"));
         SUNClient.getInstance().fetchStudentInfo(selectedStudent, new SUNResponseHandler.SUNBooleanResponseHandler() {
@@ -72,10 +66,7 @@ public class ContactInfoPage extends ActionBarActivity {
     }
 
     private void fillInfo(){
-        name.setText(selectedStudent.getName());
-        point.setText(""+selectedStudent.getPoints());
         email.setText(selectedStudent.getEmail());
         contactInfo.setText(selectedStudent.getContactInfo());
-        ImageLoader.getInstance().displayImage(selectedStudent.getAvatar(), avatar);
     }
 }
