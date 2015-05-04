@@ -18,6 +18,7 @@ import me.sunapp.ContextManager;
 import me.sunapp.model.*;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -386,6 +387,31 @@ public class SUNClient implements SUNActionPerformer {
                         resp.add(Event.parseJSONObject(list.getJSONObject(i)));
                     }
                     handler.actionCompleted(resp);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    handler.actionFailed(new Error(e.getMessage()));
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                handler.actionFailed(new Error(error.getMessage()));
+            }
+        });
+    }
+
+    @Override
+    public void fetchNews(final SUNResponseHandler.SUNNewsItemListHandler handler) {
+        get("news/", null, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    JSONArray array = new JSONArray(new String(responseBody));
+                    ArrayList<NewsItem> news = new ArrayList<NewsItem>();
+                    for(int i = 0; i<array.length(); i++){
+                        news.add(NewsItem.parseFromJSONObject(array.getJSONObject(i)));
+                    }
+                    handler.actionCompleted(news);
                 } catch (JSONException e) {
                     e.printStackTrace();
                     handler.actionFailed(new Error(e.getMessage()));

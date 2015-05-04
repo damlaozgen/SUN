@@ -2,6 +2,7 @@ package me.sunapp.client;
 
 import me.sunapp.model.Event;
 import me.sunapp.model.Joinable;
+import me.sunapp.model.NewsItem;
 import me.sunapp.model.Student;
 
 import java.util.ArrayList;
@@ -30,5 +31,9 @@ public abstract class SUNResponseHandler {
 
     public static abstract class SUNStudentListHandler extends SUNResponseHandler{
         public abstract void actionCompleted(ArrayList<Student> students);
+    }
+
+    public static abstract class SUNNewsItemListHandler extends SUNResponseHandler{
+        public abstract void actionCompleted(ArrayList<NewsItem> news);
     }
 }
