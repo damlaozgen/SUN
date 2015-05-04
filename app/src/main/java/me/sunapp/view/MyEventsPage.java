@@ -9,12 +9,22 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 import me.sunapp.R;
 import me.sunapp.client.SUNClient;
+import me.sunapp.client.SUNResponseHandler;
+import me.sunapp.helper.EventListViewAdapter;
+import me.sunapp.model.Event;
+import me.sunapp.model.Student;
 
 
 // myevents de  eventlerlistview şeklinde olucak. her bir event create edildiğinde listede
@@ -22,22 +32,41 @@ import me.sunapp.client.SUNClient;
 
 public class MyEventsPage extends Activity {
 
+    private ListView listView;
+    private TextView points;
+    private TextView name;
+    private ImageView avatar;
+    private Student selectedStudent;
+    private ArrayList<Event> selectedEvents;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.myevents_page);
+        listView = (ListView)findViewById(R.id.events_list);
+        points = (TextView)findViewById(R.id.events_points);
+        name = (TextView)findViewById(R.id.events_name);
+        avatar = (ImageView)findViewById(R.id.events_avatar);
+        selectedStudent = Student.createStudentWithId(getIntent().getExtras().getInt("student_id"));
+        SUNClient.getInstance().fetchStudentInfo(selectedStudent, new SUNResponseHandler.SUNBooleanResponseHandler() {
+            @Override
+            public void actionCompleted() {
+                fetchEvents();
+                fillUserDetails();
+            }
 
-        String[] events = {"event1", "event2", "event3", "event4", "event5", "event6", "event7", "event8", "event9", "event10"};
+            @Override
+            public void actionFailed(Error error) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
 
-        ListView listview = (ListView) findViewById(R.id.my_events_list);
-        listview.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item, R.id.events_name, events));
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_activity4, menu);
+        //  Inflate  the   menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_activity7, menu);
         return true;
     }
 
@@ -54,6 +83,41 @@ public class MyEventsPage extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void fillUserDetails(){
+        points.setText(selectedStudent.getPoints() + " points");
+        name.setText(selectedStudent.getName());
+        ImageLoader.getInstance().displayImage(selectedStudent.getAvatar(), avatar);
+    }
+
+
+
+    private void fetchEvents(){
+        SUNClient.getInstance().fetchStudentEvents(selectedStudent, new SUNResponseHandler.SUNBooleanResponseHandler() {
+            @Override
+            public void actionCompleted() {
+                selectedEvents = new ArrayList<Event>();
+                for(Event e : selectedStudent.getEvents()){
+                    if(e.getCreatorId() == selectedStudent.getId()){
+                        selectedEvents.add(e);
+                    }
+                }
+                EventListViewAdapter adapter = new EventListViewAdapter(selectedEvents);
+                listView.setAdapter(adapter);
+            }
+
+            @Override
+            public void actionFailed(Error error) {
+                Toast.makeText(getApplicationContext(), "Failed to fetch events", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void showFriends(View v){
+        Intent i = new Intent(this, FriendListPage.class);
+        i.putExtra("student_id", selectedStudent.getId());
+        startActivity(i);
     }
 
 

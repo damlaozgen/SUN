@@ -56,11 +56,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/addIntrest"
-        android:id="@+id/button21"
+        android:id="@+id/add_interest_button"
         android:background="#ffffffff"
         android:layout_above="@+id/textView16"
         android:layout_toRightOf="@+id/textView23"
-        android:layout_toEndOf="@+id/textView23" />
+        android:layout_toEndOf="@+id/textView23"
+        android:onClick="showAddInterest" />
     //
     <TextView
         android:layout_width="wrap_content"

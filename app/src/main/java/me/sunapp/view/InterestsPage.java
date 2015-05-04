@@ -1,21 +1,44 @@
 package me.sunapp.view;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import me.sunapp.R;
+import me.sunapp.client.SUNClient;
+import me.sunapp.client.SUNResponseHandler;
+import me.sunapp.model.Student;
 
 //  interests de  interestler listview şeklinde. interest oluşturulduğunda ismiyle beraber yeni bir
 // interest  oluşturulcak.
 
 public class InterestsPage extends ActionBarActivity {
-
+    Student selectedStudent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.interests_page);
+        selectedStudent = Student.createStudentWithId(getIntent().getExtras().getInt("student_id"));
+        if(selectedStudent.getId() != SUNClient.getInstance().getCurrentUser().getId()){
+            Button addInterestButton = (Button)findViewById(R.id.add_interest_button);
+            addInterestButton.setVisibility(View.INVISIBLE);
+        }
+        SUNClient.getInstance().fetchStudentInfo(selectedStudent, new SUNResponseHandler.SUNBooleanResponseHandler() {
+            @Override
+            public void actionCompleted() {
+                fetchInterests();
+            }
+
+            @Override
+            public void actionFailed(Error error) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 
@@ -39,5 +62,14 @@ public class InterestsPage extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showAddInterest(View v){
+        Intent i = new Intent(this, AddInterestActivity.class);
+        startActivity(i);
+    }
+
+    private void fetchInterests(){
+
     }
 }

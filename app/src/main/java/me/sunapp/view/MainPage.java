@@ -54,6 +54,10 @@ public class MainPage extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }if(id == R.id.action_profile){
+            Intent i = new Intent(this, ProfilePage.class);
+            i.putExtra("student_id", SUNClient.getInstance().getCurrentUser().getId());
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);

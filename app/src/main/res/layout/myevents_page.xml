@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="&quot; &quot; points"
-        android:id="@+id/future_events_points"
+        android:id="@+id/events_points"
         android:textColor="@android:color/black"
         android:textStyle="bold"
         android:textSize="25dp"
@@ -33,9 +33,9 @@
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:id="@+id/my_events_avatar"
-        android:layout_below="@+id/future_events_points"
-        android:layout_above="@+id/future_events_name"
+        android:id="@+id/events_avatar"
+        android:layout_below="@+id/events_points"
+        android:layout_above="@+id/events_name"
         android:src="@drawable/profile"
         android:layout_centerHorizontal="true" />
 
@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/namesurname"
-        android:id="@+id/future_events_name"
+        android:id="@+id/events_name"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp" />
@@ -59,7 +59,7 @@
         android:textSize="25dp"
         android:textColor="#ff007c12"
         android:textIsSelectable="false"
-        android:layout_below="@+id/future_events_name"
+        android:layout_below="@+id/events_name"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -76,7 +76,7 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/my_events_list"
+        android:id="@+id/events_list"
         android:layout_below="@+id/textView34"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />

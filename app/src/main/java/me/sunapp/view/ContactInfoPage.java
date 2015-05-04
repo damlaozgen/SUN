@@ -4,16 +4,48 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import me.sunapp.R;
+import me.sunapp.client.SUNClient;
+import me.sunapp.client.SUNResponseHandler;
+import me.sunapp.model.Student;
 
 
 public class ContactInfoPage extends ActionBarActivity {
+    Student selectedStudent;
+    TextView name;
+    TextView point;
+    TextView email;
+    TextView contactInfo;
+    ImageView avatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contactinfo_page);
+        name = (TextView)findViewById(R.id.name);
+        point = (TextView)findViewById(R.id.points);
+        email = (TextView)findViewById(R.id.email_text);
+        contactInfo = (TextView)findViewById(R.id.contact_info);
+        avatar = (ImageView)findViewById(R.id.avatar);
+
+        selectedStudent = Student.createStudentWithId(getIntent().getExtras().getInt("student_id"));
+        SUNClient.getInstance().fetchStudentInfo(selectedStudent, new SUNResponseHandler.SUNBooleanResponseHandler() {
+            @Override
+            public void actionCompleted() {
+                fillInfo();
+            }
+
+            @Override
+            public void actionFailed(Error error) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 
@@ -37,5 +69,13 @@ public class ContactInfoPage extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void fillInfo(){
+        name.setText(selectedStudent.getName());
+        point.setText(""+selectedStudent.getPoints());
+        email.setText(selectedStudent.getEmail());
+        contactInfo.setText(selectedStudent.getContactInfo());
+        ImageLoader.getInstance().displayImage(selectedStudent.getAvatar(), avatar);
     }
 }

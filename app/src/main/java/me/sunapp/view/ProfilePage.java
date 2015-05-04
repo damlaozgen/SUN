@@ -59,8 +59,10 @@ public class ProfilePage extends ActionBarActivity {
             public void onClick(View v) {
            // Burada my events butonuna basılıyor ve my events activitisine gidilliyor.
 
-            Intent intent = new Intent(v.getContext(), MyEventsPage.class);
-            startActivityForResult(intent,0);
+                Intent intent = new Intent(v.getContext(), MyEventsPage.class);
+                intent.putExtra("student_id", selectedStudent.getId());
+
+                startActivityForResult(intent,0);
                                         }
                                     }
 
@@ -72,8 +74,10 @@ public class ProfilePage extends ActionBarActivity {
          public void onClick(View v) {
         // Burada interests butonuna basılıyor ve interests activitisine gidilliyor.
 
-         Intent intent = new Intent(v.getContext(), InterestsPage.class);
-         startActivityForResult(intent,0);
+            Intent intent = new Intent(v.getContext(), InterestsPage.class);
+             intent.putExtra("student_id", selectedStudent.getId());
+
+             startActivityForResult(intent,0);
                                         }
                                     }
 
@@ -85,8 +89,10 @@ public class ProfilePage extends ActionBarActivity {
          public void onClick(View v) {
          // Burada joined events butonuna basılıyor ve joined events activitisine gidilliyor.
 
-         Intent intent = new Intent(v.getContext(), JoinedEventsPage.class);
-         startActivityForResult(intent,0);
+            Intent intent = new Intent(v.getContext(), JoinedEventsPage.class);
+             intent.putExtra("student_id", selectedStudent.getId());
+
+             startActivityForResult(intent,0);
                                         }
                                     }
 
@@ -98,10 +104,11 @@ public class ProfilePage extends ActionBarActivity {
          public void onClick(View v) {
          // Burada future events butonuna basılıyor ve future events activitisine gidilliyor.
 
-         Intent intent = new Intent(v.getContext(), FutureEventsPage.class);
-         startActivityForResult(intent,0);
-                                        }
-                                    }
+             Intent intent = new Intent(v.getContext(), FutureEventsPage.class);
+             intent.putExtra("student_id", selectedStudent.getId());
+             startActivityForResult(intent,0);
+                 }
+                                }
 
         );
 
@@ -111,8 +118,10 @@ public class ProfilePage extends ActionBarActivity {
         public void onClick(View v) {
         // Burada contact info butonuna basılıyor ve contact info activitisine gidilliyor.
 
-         Intent intent = new Intent(v.getContext(), ContactInfoPage.class);
-         startActivityForResult(intent,0);
+            Intent intent = new Intent(v.getContext(), ContactInfoPage.class);
+            intent.putExtra("student_id", selectedStudent.getId());
+
+            startActivityForResult(intent,0);
                                         }
                                     }
 
@@ -158,5 +167,11 @@ public class ProfilePage extends ActionBarActivity {
         name.setText(selectedStudent.getName());
         point.setText(""+selectedStudent.getPoints());
         ImageLoader.getInstance().displayImage(selectedStudent.getAvatar(), avatar);
+    }
+
+    public void showFriends(View v){
+        Intent i = new Intent(this, FriendListPage.class);
+        i.putExtra("student_id", selectedStudent.getId());
+        startActivity(i);
     }
 }
