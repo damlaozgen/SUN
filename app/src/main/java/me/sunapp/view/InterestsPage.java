@@ -4,9 +4,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -14,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.ArrayList;
 
 import me.sunapp.R;
 import me.sunapp.client.SUNClient;
@@ -31,6 +35,7 @@ public class InterestsPage extends ActionBarActivity implements InterestListView
     TextView name;
     TextView points;
     ImageView avatar;
+    ArrayList<Joinable> items;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +59,16 @@ public class InterestsPage extends ActionBarActivity implements InterestListView
             @Override
             public void actionFailed(Error error) {
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("ip", "OnItemClick");
+                Joinable j = items.get(position);
+                Intent i = new Intent(InterestsPage.this, InterestDetailPage.class);
+                i.putExtra("joinable_id", j.getId());
+                startActivity(i);
             }
         });
     }
@@ -94,6 +109,7 @@ public class InterestsPage extends ActionBarActivity implements InterestListView
         SUNClient.getInstance().fetchStudentInterests(selectedStudent, new SUNResponseHandler.SUNBooleanResponseHandler() {
             @Override
             public void actionCompleted() {
+                items = selectedStudent.getInterests();
                 list.setAdapter(new InterestListViewAdapter(selectedStudent.getInterests(), InterestsPage.this));
             }
 
