@@ -98,4 +98,10 @@ public class InterestDetailPage extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void newEvent(View v){
+        Intent i = new Intent(this, CreateEventPage.class);
+        i.putExtra("joinable_id", joinable.getId());
+        startActivity(i);
+    }
 }
