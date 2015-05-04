@@ -8,6 +8,7 @@ from event_api import StudentEventsView
 from student_api import StudentSearchView
 from student_api import StudentViewSet
 from student_api import StudentFriendsView
+from student_api import StudentInterestsViewSet
 from feed_api import NewsFeedView
 from notification_api import NotificationsView
 
@@ -17,6 +18,7 @@ def get_urls():
     router_v1.register(r'/event', EventViewSet, base_name='event')
     router_v1.register(r'/joinable', JoinableViewSet, base_name='joinable')
     router_v1.register(r'/student', StudentViewSet, base_name='student')
+    router_v1.register(r'/student/(?P<id>[^/.]+)/interests', StudentInterestsViewSet, base_name='student-interests')
     urls = router_v1.urls
     urls.append(url(r'^/joinable/(?P<id>[^/.]+)/events', JoinableEventListView.as_view(), name='joinable-events'))
     urls.append(url(r'^/student/(?P<id>[^/.]+)/events', StudentEventsView.as_view(), name='student-events'))
