@@ -93,17 +93,22 @@ class StudentInterestsViewSet(GenericViewSet,
 
     def create(self, request, *args, **kwargs):
         if request.user.is_anonymous():
-            return Response('Only logged-in users can add interest', status=status.HTTP_400_BAD_REQUEST)
+            return Response('Only logged-in students can add interest', status=status.HTTP_400_BAD_REQUEST)
+        try:
+            student = Student.objects.get(user=request.user)
+        except:
+            return Response('Only students can add interest', status=status.HTTP_400_BAD_REQUEST)
 
         joinable_pk = request.POST['joinable']
         try:
             joinable = Joinable.objects.get(pk=joinable_pk)
         except:
             return Response('Joinable could not be found', status=status.HTTP_400_BAD_REQUEST)
-        try:
-            student = Student.objects.get(user=request.user)
-        except:
-            return Response('Only students can add interest', status=status.HTTP_400_BAD_REQUEST)
-        student.interests.add(joinable)
-        student.save()
+
+        if 'delete' in request.POST:
+            student.interests.remove(joinable)
+        else:
+            student.interests.add(joinable)
+
         return Response(True)
+
