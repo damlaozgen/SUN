@@ -139,3 +139,9 @@ class StudentInterestsViewSet(GenericViewSet,
 
         return Response(True)
 
+    def list(self, request, *args, **kwargs):
+        pk = kwargs['id']
+        student = Student.objects.get(pk=pk)
+        serializer = self.serializer_class(student.interests, many=True)
+        return Response(serializer.data)
+
