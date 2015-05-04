@@ -61,6 +61,14 @@
             android:name=".view.FriendListPage"
             android:label="@string/title_activity_friend_list_page" >
         </activity>
+        <activity
+            android:name=".view.EventDetailPage"
+            android:label="@string/title_activity_event_detail_page" >
+        </activity>
+        <activity
+            android:name=".CreateEventPage"
+            android:label="@string/title_activity_create_event_page" >
+        </activity>
     </application>
 
 </manifest>
