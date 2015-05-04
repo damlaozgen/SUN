@@ -22,12 +22,15 @@ import me.sunapp.ContextManager;
 import me.sunapp.R;
 import me.sunapp.client.SUNClient;
 import me.sunapp.client.SUNResponseHandler;
+import me.sunapp.helper.NewsItemListViewAdapter;
 import me.sunapp.model.Event;
+import me.sunapp.model.NewsItem;
 import me.sunapp.model.Student;
 
 
 public class MainPage extends ActionBarActivity {
-
+    private ListView listView;
+    private ArrayList<NewsItem> items;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +42,19 @@ public class MainPage extends ActionBarActivity {
                                             .defaultDisplayImageOptions(options).build();
 
         ImageLoader.getInstance().init(config);
+        listView = (ListView)findViewById(R.id.listView);
+        SUNClient.getInstance().fetchNews(new SUNResponseHandler.SUNNewsItemListHandler() {
+            @Override
+            public void actionCompleted(ArrayList<NewsItem> news) {
+                items = news;
+                listView.setAdapter(new NewsItemListViewAdapter(news));
+            }
+
+            @Override
+            public void actionFailed(Error error) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
         fetchFeed();
     }
 
