@@ -292,8 +292,28 @@ public class SUNClient implements SUNActionPerformer {
         });
     }
 
-    public void fetchJoinableList(SUNResponseHandler.SUNJoinableListHandler handler){
-        handler.actionCompleted(dummyJoinableList);
+    public void fetchJoinableList(final SUNResponseHandler.SUNJoinableListHandler handler){
+        get("joinable", null, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    JSONArray list = new JSONArray(new String(responseBody));
+                    ArrayList<Joinable> resp = new ArrayList<Joinable>(list.length());
+                    for(int i = 0; i< list.length(); i++){
+                        resp.add(Joinable.parseJSONObject(list.getJSONObject(i)));
+                    }
+                    handler.actionCompleted(resp);
+                } catch (JSONException e) {
+                        e.printStackTrace();
+                    handler.actionFailed(new Error(e.getMessage()));
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                handler.actionFailed(new Error(error.getMessage()));
+            }
+        });
     }
 
     public Student getCurrentUser(){
@@ -327,6 +347,10 @@ public class SUNClient implements SUNActionPerformer {
                 handler.actionFailed(new Error(error.getMessage()));
             }
         });
+    }
+
+    public void fetchStudentInterests(final Student s, final SUNResponseHandler.SUNBooleanResponseHandler handler){
+        
     }
 
     public void fetchStudentFriends(final Student s, final SUNResponseHandler.SUNBooleanResponseHandler handler){
