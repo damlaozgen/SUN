@@ -32,10 +32,10 @@ public class FutureEventsPage extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.futureevents_page);
-        listView = (ListView)findViewById(R.id.future_events_list);
-        points = (TextView)findViewById(R.id.my_events_points);
-        name = (TextView)findViewById(R.id.my_events_name);
-        avatar = (ImageView)findViewById(R.id.future_events_avatar);
+        listView = (ListView)findViewById(R.id.events_list);
+        points = (TextView)findViewById(R.id.events_points);
+        name = (TextView)findViewById(R.id.events_name);
+        avatar = (ImageView)findViewById(R.id.events_avatar);
         selectedStudent = Student.createStudentWithId(getIntent().getExtras().getInt("student_id"));
         SUNClient.getInstance().fetchStudentInfo(selectedStudent, new SUNResponseHandler.SUNBooleanResponseHandler() {
             @Override

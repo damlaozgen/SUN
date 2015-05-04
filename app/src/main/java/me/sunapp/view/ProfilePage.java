@@ -1,5 +1,6 @@
 package me.sunapp.view;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -27,6 +28,9 @@ public class ProfilePage extends ActionBarActivity {
     private TextView point;
     private ImageView avatar;
     private Button notificationButton;
+    private Button toggleFriendshipButton;
+    private static final String addFriendText = "Add to Friends";
+    private static final String removeFriendText = "Remove from Friends";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +41,62 @@ public class ProfilePage extends ActionBarActivity {
         avatar = (ImageView)findViewById(R.id.profile_avatar);
         notificationButton = (Button)findViewById(R.id.profile_notification_button);
         selectedStudent = Student.createStudentWithId(getIntent().getExtras().getInt("student_id"));
+        toggleFriendshipButton = (Button)findViewById(R.id.toggleFriend);
         if(selectedStudent.getId() != SUNClient.getInstance().getCurrentUser().getId()){
             notificationButton.setVisibility(View.INVISIBLE);
+            toggleFriendshipButton.setVisibility(View.VISIBLE);
+            toggleFriendshipButton.setText(addFriendText);
+            for(Student s : SUNClient.getInstance().getCurrentUser().getFriends()){
+                if(s.getId() == selectedStudent.getId()){
+                    toggleFriendshipButton.setText(removeFriendText);
+                    break;
+                }
+            }
         }else{
             notificationButton.setVisibility(View.VISIBLE);
+            toggleFriendshipButton.setVisibility(View.INVISIBLE);
         }
+
+        toggleFriendshipButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ProgressDialog pd = new ProgressDialog(ProfilePage.this);
+                pd.setCancelable(false);
+                if(toggleFriendshipButton.getText().toString().equals(addFriendText)){
+                    pd.setMessage("Adding...");
+                    pd.show();
+                    SUNClient.getInstance().addFriend(selectedStudent, new SUNResponseHandler.SUNBooleanResponseHandler() {
+                        @Override
+                        public void actionCompleted() {
+                            pd.dismiss();
+                            toggleFriendshipButton.setText(removeFriendText);
+                        }
+
+                        @Override
+                        public void actionFailed(Error error) {
+                            pd.dismiss();
+                            Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }else{
+                    pd.setMessage("Removing...");
+                    pd.show();
+                    SUNClient.getInstance().removeFriend(selectedStudent, new SUNResponseHandler.SUNBooleanResponseHandler() {
+                        @Override
+                        public void actionCompleted() {
+                            pd.dismiss();
+                            toggleFriendshipButton.setText(addFriendText);
+                        }
+
+                        @Override
+                        public void actionFailed(Error error) {
+                            pd.dismiss();
+                            Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            }
+        });
         SUNClient.getInstance().fetchStudentInfo(selectedStudent, new SUNResponseHandler.SUNBooleanResponseHandler() {
             @Override
             public void actionCompleted() {
@@ -53,8 +108,8 @@ public class ProfilePage extends ActionBarActivity {
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-        Button button6 = (Button) findViewById(R.id.button6);
-        button6.setOnClickListener( new OnClickListener() {
+        Button own_events = (Button) findViewById(R.id.own_events_button);
+        own_events.setOnClickListener( new OnClickListener() {
 
             public void onClick(View v) {
            // Burada my events butonuna basılıyor ve my events activitisine gidilliyor.
