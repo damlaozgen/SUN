@@ -2,6 +2,7 @@ package me.sunapp.model;
 
 import org.apache.http.impl.cookie.DateParseException;
 import org.apache.http.impl.cookie.DateUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class Event {
     private int id;
@@ -18,6 +20,7 @@ public class Event {
     private ArrayList<Student> joinedStudents;
     private String eventInfo;
     private int creatorId;
+    private static HashMap<Integer, Event> cache = new HashMap<Integer, Event>();
 
     @Override
     public String toString() {
@@ -114,10 +117,22 @@ public class Event {
                 e.printStackTrace();
                 d = new Date();
             }
-            return new Event(id, creatorId, name, d, j, info);
+            Event e = new Event(id, creatorId, name, d, j, info);
+            cache.put(id, e);
+            JSONArray students = obj.getJSONArray("students");
+            ArrayList<Student> studentArrayList = new ArrayList<>(students.length());
+            for(int i = 0; i<students.length(); i++){
+                studentArrayList.add(Student.parseJSONObject(students.getJSONObject(i)));
+            }
+            e.setJoinedStudents(studentArrayList);
+            return e;
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static Event getEventFromCache(int id){
+        return cache.get(id);
     }
 }
