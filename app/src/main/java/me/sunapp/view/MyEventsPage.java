@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -59,7 +60,15 @@ public class MyEventsPage extends Activity {
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Event e = selectedEvents.get(position);
+                Intent i = new Intent(MyEventsPage.this, EventDetailPage.class);
+                i.putExtra("event_id", e.getId());
+                startActivity(i);
+            }
+        });
     }
 
 
