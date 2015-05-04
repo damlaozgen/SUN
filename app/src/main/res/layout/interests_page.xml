@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="&quot; &quot; points"
-        android:id="@+id/textView16"
+        android:id="@+id/points"
         android:textColor="@android:color/black"
         android:textStyle="bold"
         android:textSize="25dp"
@@ -34,21 +34,18 @@
     <ImageView
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:id="@+id/imageView12"
-        android:background="@drawable/profile"
-        android:layout_below="@+id/textView16"
-        android:layout_alignLeft="@+id/textView16"
-        android:layout_alignStart="@+id/textView16"
-        android:layout_above="@+id/textView17"
-        android:layout_alignRight="@+id/textView17"
-        android:layout_alignEnd="@+id/textView17" />
+        android:id="@+id/avatar"
+        android:layout_below="@+id/points"
+        android:layout_above="@+id/name"
+        android:src="@drawable/profile"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/namesurname"
-        android:id="@+id/textView17"
+        android:id="@+id/name"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
@@ -58,7 +55,7 @@
         android:text="@string/addIntrest"
         android:id="@+id/add_interest_button"
         android:background="#ffffffff"
-        android:layout_above="@+id/textView16"
+        android:layout_above="@+id/points"
         android:layout_toRightOf="@+id/textView23"
         android:layout_toEndOf="@+id/textView23"
         android:onClick="showAddInterest" />
@@ -73,14 +70,14 @@
         android:textSize="25dp"
         android:textColor="#ff007c12"
         android:textIsSelectable="false"
-        android:layout_below="@+id/textView17"
+        android:layout_below="@+id/name"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView2"
+        android:id="@+id/listView"
         android:layout_below="@+id/textView23"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -91,8 +88,8 @@
         android:id="@+id/imageView21"
         android:background="@drawable/line"
         android:layout_below="@+id/imageView21"
-        android:layout_alignRight="@+id/listView2"
-        android:layout_alignEnd="@+id/listView2" />
+        android:layout_alignRight="@+id/listView"
+        android:layout_alignEnd="@+id/listView" />
 
     <ImageView
         android:layout_width="wrap_content"
