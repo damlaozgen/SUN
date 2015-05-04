@@ -55,5 +55,7 @@
     <string name="title_activity_find_friends_page">findFriendsPage</string>
     <string name="foundFriends">friend10</string>
     <string name="title_activity_friend_list_page">FriendListPage</string>
+    <string name="title_activity_event_detail_page">EventDetailPage</string>
+    <string name="title_activity_create_event_page">CreateEventPage</string>
 
 </resources>

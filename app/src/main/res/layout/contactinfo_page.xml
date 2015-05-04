@@ -8,34 +8,7 @@
     android:background="@drawable/background"
     android:id="@+id/profile_layout">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="&quot; &quot; points"
-        android:id="@+id/textView18"
-        android:textColor="@android:color/black"
-        android:textStyle="bold"
-        android:textSize="25dp"
-        android:layout_above="@+id/imageView15"
-        android:layout_centerHorizontal="true" />
     //
-    <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:id="@+id/imageView15"
-        android:background="@drawable/profile"
-        android:layout_above="@+id/textView19"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/namesurname"
-        android:id="@+id/textView19"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -47,7 +20,7 @@
         android:textSize="25dp"
         android:textColor="#ff007c12"
         android:textIsSelectable="false"
-        android:layout_below="@+id/textView19"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
