@@ -7,6 +7,7 @@ class Student(models.Model):
     avatar = models.CharField(max_length=512, null=True, blank=True)
     contact_info = models.TextField(null=True, blank=True)
     friends = models.ManyToManyField('self', symmetrical=False)
+    interests = models.ManyToManyField('event.Joinable')
 
     def __str__(self):
         full_name = self.user.get_full_name()
