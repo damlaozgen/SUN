@@ -13,5 +13,6 @@ public interface SUNActionPerformer {
     public void addInterest(Joinable joinable, SUNResponseHandler.SUNBooleanResponseHandler handler);
     public void removeInterest(Joinable joinable, SUNResponseHandler.SUNBooleanResponseHandler handler);
     public void addFriend(Student friend, SUNResponseHandler.SUNBooleanResponseHandler handler);
+    public void removeFriend(Student friend, SUNResponseHandler.SUNBooleanResponseHandler handler);
     public void searchUser(String keyword, SUNResponseHandler.SUNStudentListHandler handler);
 }

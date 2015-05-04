@@ -1,5 +1,8 @@
 package me.sunapp.model;
 
+import android.util.Log;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,6 +59,12 @@ public class Student extends User{
         return lastFetchDate;
     }
 
+    public boolean isFullProfile(){
+        if(this.email != null){
+            return true;
+        }
+        return false;
+    }
     @Override
     public String toString() {
         return "Student{" + super.toString() +
@@ -91,11 +100,24 @@ public class Student extends User{
                 email = obj.getString("email");
 
             Student s = new Student(id, email, null, name, avatar, contact_info);
+            if(obj.has("friends")){
+                JSONArray friends = obj.getJSONArray("friends");
+                ArrayList<Student> friendList = new ArrayList<Student>(friends.length());
+                for(int i = 0; i < friends.length(); i++){
+                    friendList.add(Student.parseJSONObject(friends.getJSONObject(i)));
+                }
+                s.setFriends(friendList);
+            }
             s.lastFetchDate = new Date();
             return s;
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Student && ((Student) o).getId() == this.getId();
     }
 }

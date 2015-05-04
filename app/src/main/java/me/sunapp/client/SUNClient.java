@@ -73,6 +73,7 @@ public class SUNClient implements SUNActionPerformer {
                     currentUser = Student.parseJSONObject(new JSONObject(new String(responseBody)));
                     studentCache.put(currentUser.getId(), currentUser);
                     fetchStudentFriends(currentUser, null);
+                    fetchStudentInterests(currentUser, null);
                     Log.d("Client", "User fetched:"+currentUser.toString());
                     while(userWaitList.size() != 0){
                         SUNResponseHandler.SUNBooleanResponseHandler handler = userWaitList.remove(userWaitList.size()-1);
@@ -139,7 +140,7 @@ public class SUNClient implements SUNActionPerformer {
     public void fetchStudentInfo(final Student s, final SUNResponseHandler.SUNBooleanResponseHandler handler){
         if(studentCache.containsKey(s.getId())){
             Student cached = studentCache.get(s.getId());
-            if(cached.getLastFetchDate() != null && new Date().getTime() - cached.getLastFetchDate().getTime() < 60 * 1000){
+            if(cached.getLastFetchDate() != null && cached.isFullProfile() && new Date().getTime() - cached.getLastFetchDate().getTime() < 60 * 1000){
                 s.updateStudent(cached);
                 handler.actionCompleted();
                 return;
@@ -230,27 +231,55 @@ public class SUNClient implements SUNActionPerformer {
     }
 
     @Override
-    public void addInterest(Joinable joinable, SUNResponseHandler.SUNBooleanResponseHandler handler) {
+    public void addInterest(final Joinable joinable, final SUNResponseHandler.SUNBooleanResponseHandler handler) {
         if(currentUser.getInterests().contains(joinable)){
             handler.actionFailed(new Error("User is already following the interest"));
             return;
         }
-        currentUser.getInterests().add(joinable);
-        handler.actionCompleted();
+        RequestParams params = new RequestParams();
+        params.put("joinable", joinable.getId());
+        post("student/" + currentUser.getId() + "/interests/", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                currentUser.getInterests().add(joinable);
+                handler.actionCompleted();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                handler.actionFailed(new Error(error.getMessage()));
+            }
+        });
+
     }
 
     @Override
-    public void removeInterest(Joinable joinable, SUNResponseHandler.SUNBooleanResponseHandler handler) {
+    public void removeInterest(final Joinable joinable, final SUNResponseHandler.SUNBooleanResponseHandler handler) {
         if(!currentUser.getInterests().contains(joinable)){
             handler.actionFailed(new Error("User is not following the interest"));
             return;
         }
-        currentUser.getInterests().remove(joinable);
-        handler.actionCompleted();
+        RequestParams params = new RequestParams();
+        params.put("joinable", joinable.getId());
+        params.put("delete", true);
+        post("student/" + currentUser.getId() + "/interests/", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                currentUser.getInterests().remove(joinable);
+                handler.actionCompleted();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("Client", new String(responseBody));
+                handler.actionFailed(new Error(error.getMessage()));
+            }
+        });
+
     }
 
     @Override
-    public void addFriend(Student friend, SUNResponseHandler.SUNBooleanResponseHandler handler) {
+    public void addFriend(final Student friend, final SUNResponseHandler.SUNBooleanResponseHandler handler) {
         if(friend.getId() == currentUser.getId()){
             handler.actionFailed(new Error("You cannot add yourself as a friend"));
             return;
@@ -259,9 +288,46 @@ public class SUNClient implements SUNActionPerformer {
             handler.actionFailed(new Error("You are already friends with " + friend.getName()));
             return;
         }
-        currentUser.getFriends().add(currentUser);
-        currentUser.getFriends().add(friend);
-        handler.actionCompleted();
+        RequestParams params = new RequestParams();
+        params.put("friend", friend.getId());
+        post("student/" + currentUser.getId() + "/friendship/", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                currentUser.getFriends().add(friend);
+                handler.actionCompleted();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                handler.actionFailed(new Error(error.getMessage()));
+            }
+        });
+    }
+
+    @Override
+    public void removeFriend(final Student friend, final SUNResponseHandler.SUNBooleanResponseHandler handler) {
+        if(friend.getId() == currentUser.getId()){
+            handler.actionFailed(new Error("You cannot remove yourself from friends"));
+            return;
+        }
+        if(!currentUser.getFriends().contains(friend)){
+            handler.actionFailed(new Error("You are not friends with " + friend.getName()));
+            return;
+        }
+        RequestParams params = new RequestParams();
+        params.put("friend", friend.getId());
+        delete("student/" + currentUser.getId() + "/friendship/", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                currentUser.getFriends().remove(friend);
+                handler.actionCompleted();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                handler.actionFailed(new Error(error.getMessage()));
+            }
+        });
     }
 
     @Override
@@ -293,7 +359,7 @@ public class SUNClient implements SUNActionPerformer {
     }
 
     public void fetchJoinableList(final SUNResponseHandler.SUNJoinableListHandler handler){
-        get("joinable", null, new AsyncHttpResponseHandler() {
+        get("joinable/", null, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
@@ -335,22 +401,54 @@ public class SUNClient implements SUNActionPerformer {
                     for(int i = 0; i<array.length(); i++){
                         s.getEvents().add(Event.parseJSONObject(array.getJSONObject(i)));
                     }
-                    handler.actionCompleted();
+                    if(handler != null)
+                        handler.actionCompleted();
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    handler.actionFailed(new Error(e.getMessage()));
+                    if(handler != null)
+                        handler.actionFailed(new Error(e.getMessage()));
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                handler.actionFailed(new Error(error.getMessage()));
+                if(handler != null)
+                    handler.actionFailed(new Error(error.getMessage()));
             }
         });
     }
 
     public void fetchStudentInterests(final Student s, final SUNResponseHandler.SUNBooleanResponseHandler handler){
-        
+        if(s.getId() == currentUser.getId() && currentUser.getInterests().size() != 0 && handler != null){
+            handler.actionCompleted();
+        }
+        get("student/"+s.getId()+"/interests/", null, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    JSONArray interests = new JSONArray(new String(responseBody));
+                    ArrayList<Joinable> list = new ArrayList<Joinable>(interests.length());
+                    for(int i = 0;i<interests.length(); i++){
+                        list.add(Joinable.parseJSONObject(interests.getJSONObject(i)));
+                    }
+                    s.setInterests(list);
+                    Log.d("Client", "Interests fetched:" + list.toString());
+                    if(handler != null)
+                        handler.actionCompleted();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    if(handler != null)
+                        handler.actionFailed(new Error(e.getMessage()));
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("Client", "Interest fetch failed:"+error);
+                if(handler != null)
+                    handler.actionFailed(new Error(error.getMessage()));
+            }
+        });
     }
 
     public void fetchStudentFriends(final Student s, final SUNResponseHandler.SUNBooleanResponseHandler handler){
@@ -391,6 +489,9 @@ public class SUNClient implements SUNActionPerformer {
 
     private void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         httpClient.post(getAbsoluteUrl(url), params, responseHandler);
+    }
+    private void delete(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+        httpClient.delete(ContextManager.getInstance().getAppContext(), getAbsoluteUrl(url), null, params, responseHandler);
     }
     private void post(String url, JSONObject entity, AsyncHttpResponseHandler responseHandler){
         try {

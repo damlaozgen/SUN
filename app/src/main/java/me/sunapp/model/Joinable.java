@@ -1,6 +1,5 @@
 package me.sunapp.model;
 
-import android.graphics.Paint;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -73,8 +72,9 @@ public abstract class Joinable {
                 cache.put(id, j);
                 return j;
             }else if(type.equalsIgnoreCase("h")){
-                Log.e("Joinable", "Hobbies not implemented yet");
-                return null;
+                j = Hobby.parseJSONObject(obj);
+                cache.put(id, j);
+                return j;
             }
         } catch (JSONException e) {
             e.printStackTrace();
