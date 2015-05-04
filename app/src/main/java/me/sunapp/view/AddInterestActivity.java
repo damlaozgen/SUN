@@ -1,10 +1,13 @@
 package me.sunapp.view;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -18,12 +21,22 @@ import me.sunapp.model.Joinable;
 
 public class AddInterestActivity extends ActionBarActivity implements InterestListViewAdapter.InterestListObserver {
     private ListView list;
+    private ArrayList<Joinable> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_interest);
         list = (ListView)findViewById(R.id.listView);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Joinable j = items.get(position);
+                Intent i = new Intent(AddInterestActivity.this, InterestDetailPage.class);
+                i.putExtra("joinable_id", j.getId());
+                startActivity(i);
+            }
+        });
         fetchInterests();
     }
 
@@ -54,6 +67,7 @@ public class AddInterestActivity extends ActionBarActivity implements InterestLi
         SUNClient.getInstance().fetchJoinableList(new SUNResponseHandler.SUNJoinableListHandler() {
             @Override
             public void actionCompleted(ArrayList<Joinable> joinables) {
+                items = joinables;
                 list.setAdapter(new InterestListViewAdapter(joinables, AddInterestActivity.this));
             }
 
