@@ -29,7 +29,8 @@
         android:layout_alignBottom="@+id/main_find_friends"
         android:layout_alignRight="@+id/imageView11"
         android:layout_alignEnd="@+id/imageView11"
-        android:layout_marginBottom="5dp" />
+        android:layout_marginBottom="5dp"
+        android:onClick="bumpPressed" />
 
     <TextView
         android:layout_width="wrap_content"
