@@ -54,10 +54,6 @@
             android:label="Main Page" >
         </activity>
         <activity
-            android:name=".FindFriendsPage"
-            android:label="Find Friends" >
-        </activity>
-        <activity
             android:name=".view.FriendListPage"
             android:label="@string/title_activity_friend_list_page" >
         </activity>
@@ -66,7 +62,7 @@
             android:label="@string/title_activity_event_detail_page" >
         </activity>
         <activity
-            android:name=".CreateEventPage"
+            android:name=".view.CreateEventPage"
             android:label="@string/title_activity_create_event_page" >
         </activity>
     </application>
