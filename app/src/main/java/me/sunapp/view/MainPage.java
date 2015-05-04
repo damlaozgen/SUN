@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -31,7 +32,12 @@ public class MainPage extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_page);
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                                    .cacheOnDisk(true)
+                                    .cacheInMemory(true).build();
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
+                                            .defaultDisplayImageOptions(options).build();
+
         ImageLoader.getInstance().init(config);
         fetchFeed();
     }
@@ -92,5 +98,10 @@ public class MainPage extends ActionBarActivity {
             startActivity(i);
         }
 
+    }
+    public void bumpPressed(View v){
+        Intent i = new Intent(this, BumpActivity.class);
+        i.putExtra("student_id", SUNClient.getInstance().getCurrentUser().getId());
+        startActivity(i);
     }
 }
