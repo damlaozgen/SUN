@@ -37,13 +37,17 @@ class EventSerializer(HyperlinkedModelSerializer):
     students = LiteStudentSerializer(many=True)
     joinable = LiteJoinableSerializer()
     creator = SerializerMethodField()
+    location_id = SerializerMethodField()
 
     class Meta:
         model = Event
-        fields = ('id', 'creator', 'name', 'info', 'date', 'students', 'joinable')
+        fields = ('id', 'creator', 'name', 'info', 'date', 'students', 'joinable', 'location_id')
 
     def get_creator(self, object):
         return object.owner.pk
+
+    def get_location_id(self, object):
+        return object.location.pk
 
 
 class LocationSerializer(ModelSerializer):
