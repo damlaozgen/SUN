@@ -60,6 +60,7 @@ class EventViewSet(ModelViewSet):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         joinable = Joinable.objects.get(pk=request.data['joinable'])
         event = Event(joinable=joinable, name=request.data['name'], date=request.data['date'], info=request.data['info'])
+        event.owner = request.user
         try:
             student = Student.objects.get(user=request.user)
             event.students.add(student)
