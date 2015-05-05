@@ -78,13 +78,9 @@ class EventViewSet(ModelViewSet):
             event.location = location
 
         event.owner = request.user
-        event.students.add(Student.objects.get(user=request.user))
-        try:
-            student = Student.objects.get(user=request.user)
-            event.students.add(student)
-        except:
-            pass
         event.save()
+        event.students.add(Student.objects.get(user=request.user))
+
         return Response("OK", status=status.HTTP_201_CREATED)
 
     @detail_route(methods=['get'])
