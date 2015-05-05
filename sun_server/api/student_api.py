@@ -65,6 +65,7 @@ class StudentViewSet(GenericViewSet,
     queryset = Student.objects.all()
 
     def create(self, request, *args, **kwargs):
+        print request.POST
         if User.objects.filter(email=request.POST['email']).count() > 0:
             return Response("Someone else is using this email address", status=status.HTTP_400_BAD_REQUEST)
         import re
