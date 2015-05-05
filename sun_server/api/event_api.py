@@ -53,7 +53,7 @@ class LocationSerializer(ModelSerializer):
 
 
 class LocationListView(APIView):
-    def get(self, **kwargs):
+    def get(self, *args, **kwargs):
         locations = Location.objects.all()
         serializer = LocationSerializer(locations, many=True)
         return Response(serializer.data)
@@ -97,8 +97,6 @@ class EventViewSet(ModelViewSet):
             student = Student.objects.get(user=request.user)
             try:
                 event = Event.objects.get(pk=pk)
-                if student in event.students:
-                    return Response('You already joined this event', status=status.HTTP_400_BAD_REQUEST)
                 event.students.add(student)
                 event.save()
                 return Response(status=status.HTTP_200_OK)
@@ -113,8 +111,6 @@ class EventViewSet(ModelViewSet):
         try:
             student = Student.objects.get(user=request.user)
             event = Event.objects.get(pk=pk)
-            if student not in event.students:
-                return Response('You are not joined to the event', status=status.HTTP_400_BAD_REQUEST)
             event.students.remove(student)
             event.save()
             return Response(status=status.HTTP_200_OK)
