@@ -53,7 +53,7 @@ class LocationSerializer(ModelSerializer):
 
 
 class LocationListView(APIView):
-    def get(self, request, id, format=None):
+    def get(self, **kwargs):
         locations = Location.objects.all()
         serializer = LocationSerializer(locations, many=True)
         return Response(serializer.data)
@@ -73,7 +73,12 @@ class EventViewSet(ModelViewSet):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         joinable = Joinable.objects.get(pk=request.data['joinable'])
         event = Event(joinable=joinable, name=request.data['name'], date=request.data['date'], info=request.data['info'])
+        if 'location' in request.POST:
+            location = Location.objects.get(pk=request.POST['location'])
+            event.location = location
+
         event.owner = request.user
+        event.students.add(Student.objects.get(user=request.user))
         try:
             student = Student.objects.get(user=request.user)
             event.students.add(student)
