@@ -64,6 +64,27 @@ class StudentViewSet(GenericViewSet,
     serializer_class = StudentSerializer
     queryset = Student.objects.all()
 
+    def create(self, request, *args, **kwargs):
+        if User.objects.filter(email=request.POST['email']).count() > 0:
+            return Response("Someone else is using this email address", status=status.HTTP_400_BAD_REQUEST)
+        import re
+        if not re.match(r'[^@]+@[^@]+\.[^@]+', request.POST['email']):
+            return Response("Email is not valid", status=status.HTTP_400_BAD_REQUEST)
+        if User.objects.filter(username=request.POST['username']).count() > 0:
+            return Response("Username is in use", status=status.HTTP_400_BAD_REQUEST)
+        try:
+            user = User.objects.create_user(request.POST['username'], request.POST['email'], request.POST['password'])
+            user.first_name = request.POST['first_name']
+            user.last_name = request.POST['last_name']
+            user.save()
+        except Exception as e:
+            return Response(e.message, status=status.HTTP_400_BAD_REQUEST)
+
+        student = Student()
+        student.user = user
+        student.save()
+        return Response("OK", status=status.HTTP_201_CREATED)
+
     def retrieve(self, request, *args, **kwargs):
         pk = kwargs['pk']
         if pk == 'self':
