@@ -11,6 +11,7 @@ from student_api import StudentFriendsView
 from student_api import StudentInterestsViewSet
 from feed_api import NewsFeedView
 from notification_api import NotificationsView
+from event_api import LocationListView
 
 
 def get_urls():
@@ -26,6 +27,7 @@ def get_urls():
     urls.append(url(r'^/student/search/(?P<keyword>[^/.]+)', StudentSearchView.as_view(), name='search_student'))
     urls.append(url(r'^/news', NewsFeedView.as_view(), name='news-feed'))
     urls.append(url(r'^/notifications', NotificationsView.as_view(), name='notifications'))
+    urls.append(url(r'^/locations', LocationListView.as_view(), name='locations'))
     return urls
 
 

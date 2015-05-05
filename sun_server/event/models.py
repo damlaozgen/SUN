@@ -24,6 +24,12 @@ class Event(models.Model):
     date = models.DateTimeField()
     info = models.TextField()
     students = models.ManyToManyField('login.Student', null=True, blank=True, related_name='joined_events')
+    location = models.ForeignKey('Location', null=True, blank=True)
+
+
+class Location(models.Model):
+    name = models.CharField(max_length=255)
+    token = models.TextField()
 
 
 class CheckIn(models.Model):

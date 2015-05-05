@@ -11,7 +11,7 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import ListModelMixin
 from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.views import APIView
-from event.models import Event
+from event.models import Event, Location
 from event.models import Joinable
 from login.models import Student
 from student_api import LiteStudentSerializer
@@ -44,6 +44,19 @@ class EventSerializer(HyperlinkedModelSerializer):
 
     def get_creator(self, object):
         return object.owner.pk
+
+
+class LocationSerializer(ModelSerializer):
+    class Meta:
+        model = Location
+        fields = ('id', 'name')
+
+
+class LocationListView(APIView):
+    def get(self, request, id, format=None):
+        locations = Location.objects.all()
+        serializer = LocationSerializer(locations, many=True)
+        return Response(serializer.data)
 
 
 class EventViewSet(ModelViewSet):
