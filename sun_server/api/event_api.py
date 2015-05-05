@@ -67,8 +67,7 @@ class EventViewSet(ModelViewSet):
         except:
             pass
         event.save()
-        serializer = EventSerializer(event)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response("OK", status=status.HTTP_201_CREATED)
 
     @detail_route(methods=['get'])
     def check_in(self, request, pk):
