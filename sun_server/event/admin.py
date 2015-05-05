@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import Event
+from models import Event, Location
 from models import Joinable
 
 
@@ -10,4 +10,9 @@ class EventAdmin(admin.ModelAdmin):
 
 @admin.register(Joinable)
 class JoinableAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Location)
+class LocationAdmin(admin.ModelAdmin):
     pass
