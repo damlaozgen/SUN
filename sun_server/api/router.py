@@ -13,6 +13,7 @@ from feed_api import NewsFeedView
 from notification_api import NotificationsView
 from event_api import LocationListView
 from event_api import CheckinView
+from student_api import LeaderBoardView
 
 
 def get_urls():
@@ -29,7 +30,9 @@ def get_urls():
     urls.append(url(r'^/news', NewsFeedView.as_view(), name='news-feed'))
     urls.append(url(r'^/notifications', NotificationsView.as_view(), name='notifications'))
     urls.append(url(r'^/locations', LocationListView.as_view(), name='locations'))
-    urls.append(url(r'^/checkin', CheckinView.as_view(), name='checkim'))
+    urls.append(url(r'^/checkin', CheckinView.as_view(), name='checkin'))
+    urls.append(url(r'^/leaderboard', LeaderBoardView.as_view(), name='leaderboard'))
+
     return urls
 
 
