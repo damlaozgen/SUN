@@ -40,14 +40,6 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Location',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=255)),
-                ('token', models.TextField()),
-            ],
-        ),
-        migrations.CreateModel(
             name='StudentClub',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -61,18 +53,13 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='event',
-            name='location',
-            field=models.ForeignKey(blank=True, to='event.Location', null=True),
-        ),
-        migrations.AddField(
-            model_name='event',
             name='owner',
             field=models.ForeignKey(blank=True, to=settings.AUTH_USER_MODEL, null=True),
         ),
         migrations.AddField(
             model_name='event',
             name='students',
-            field=models.ManyToManyField(related_name='joined_events', null=True, to='login.Student', blank=True),
+            field=models.ManyToManyField(to='login.Student'),
         ),
         migrations.AddField(
             model_name='checkin',
