@@ -16,6 +16,8 @@ from event.models import Joinable
 from login.models import Student
 from student_api import LiteStudentSerializer
 from student_api import StudentSerializer
+import datetime
+from event.models import CheckIn
 
 
 class LiteJoinableSerializer(ModelSerializer):
@@ -88,14 +90,6 @@ class EventViewSet(ModelViewSet):
         return Response("OK", status=status.HTTP_201_CREATED)
 
     @detail_route(methods=['get'])
-    def check_in(self, request, pk):
-        try:
-            student = Student.objects.get(user=request.user)
-            event = Event.objects.get(pk=pk)
-        except:
-            return Response('Only students can check-in', status=status.HTTP_400_BAD_REQUEST)
-
-    @detail_route(methods=['get'])
     def join(self, request, pk):
         try:
             student = Student.objects.get(user=request.user)
@@ -140,3 +134,30 @@ class StudentEventsView(APIView):
         events = Student.objects.get(pk=kwargs['id']).joined_events
         serializer = EventSerializer(events, many=True, context={'request': request})
         return Response(serializer.data)
+
+
+class CheckinView(APIView):
+    def post(self, request, **kwargs):
+        try:
+            student = Student.objects.get(user=request.user)
+        except:
+            return Response("Only logged in students can check-in", status=status.HTTP_400_BAD_REQUEST)
+        try:
+            location = Location.objects.get(token=request.POST['location_id'])
+        except:
+            return Response("Unknown location", status=status.HTTP_400_BAD_REQUEST)
+        now_min30 = datetime.datetime.now() - datetime.timedelta(minutes=30)
+        now_plus30 = datetime.datetime.now() + datetime.timedelta(minutes=30)
+        possible_events = student.joined_events.filter(date__gt=now_min30).filter(date__lt=now_plus30)
+        try:
+            event = possible_events[0]
+        except:
+            return Response("There is no event that you can check in", status=status.HTTP_400_BAD_REQUEST)
+        if CheckIn.objects.filter(event=event, student=student).count() > 0:
+            return Response("You already checked in to the event", status=status.HTTP_400_BAD_REQUEST)
+        checkin = CheckIn(event=event, student=student, rewarded_points=100)
+        checkin.save()
+        student.points += 100
+        student.save()
+        return Response("OK")
+

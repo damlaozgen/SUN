@@ -33,7 +33,7 @@ class StudentSerializer(HyperlinkedModelSerializer):
 
     class Meta:
         model = Student
-        fields = ('id', 'avatar', 'email', 'name', 'contact_info', 'events', 'friends')
+        fields = ('id', 'avatar', 'email', 'name', 'contact_info', 'events', 'friends', 'points')
 
     def get_name(self, object, **kwargs):
         return object.user.get_full_name()

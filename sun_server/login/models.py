@@ -8,6 +8,7 @@ class Student(models.Model):
     contact_info = models.TextField(null=True, blank=True)
     friends = models.ManyToManyField('self', symmetrical=False, blank=True)
     interests = models.ManyToManyField('event.Joinable', blank=True)
+    points = models.IntegerField(default=0)
 
     def __str__(self):
         full_name = self.user.get_full_name()
