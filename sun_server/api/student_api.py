@@ -171,5 +171,5 @@ class StudentInterestsViewSet(GenericViewSet,
 class LeaderBoardView(APIView):
     def get(self, request, **kwargs):
         students = Student.objects.order_by("-points")
-        serializer = StudentSerializer(students, many=True)
+        serializer = StudentSerializer(students, many=True, context={'request':request})
         return Response(serializer.data)
