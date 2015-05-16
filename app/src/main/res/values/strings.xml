@@ -60,5 +60,6 @@
     <string name="title_activity_create_event_page">CreateEventPage</string>
     <string name="title_activity_bump">BumpActivity</string>
     <string name="title_activity_interest_detail_page">InterestDetailPage</string>
+    <string name="title_activity_leader_board">LeaderBoardActivity</string>
 
 </resources>

@@ -1,13 +1,16 @@
 package me.sunapp.view;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 
@@ -50,13 +53,6 @@ public class EventDetailPage extends ActionBarActivity {
         participants = (TextView)findViewById(R.id.event_participants);
         event = Event.getEventFromCache(getIntent().getExtras().getInt("event_id"));
         joinButton = (Button)findViewById(R.id.event_join_button);
-        joinButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (joinButton.getText() == JOIN_TEXT){
-                }
-            }
-        });
         owner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +67,7 @@ public class EventDetailPage extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_event_detail_page, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -83,8 +79,16 @@ public class EventDetailPage extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_logout) {
+            SUNClient.getInstance().logout();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }if(id == R.id.action_profile){
+            Intent i = new Intent(this, ProfilePage.class);
+            i.putExtra("student_id", SUNClient.getInstance().getCurrentUser().getId());
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);
@@ -94,9 +98,9 @@ public class EventDetailPage extends ActionBarActivity {
         name.setText(event.getName());
         info.setText(event.getEventInfo());
         if(event.getJoinable() instanceof Course){
-            type.setText("Course");
+            type.setText("Course / " + event.getJoinable().getName());
         }else if(event.getJoinable() instanceof Hobby){
-            type.setText("Hobby");
+            type.setText("Hobby / " + event.getJoinable().getName());
         }
         participants.setText(""+event.getJoinedStudents().size());
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -104,6 +108,11 @@ public class EventDetailPage extends ActionBarActivity {
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm");
         time.setText(timeFormat.format(event.getDate()));
         eventOwner = Student.createStudentWithId(event.getCreatorId());
+        if(event.getLocation() != null){
+            place.setText(event.getLocation().getName());
+        }else{
+            place.setText("No Location");
+        }
         SUNClient.getInstance().fetchStudentInfo(eventOwner, new SUNResponseHandler.SUNBooleanResponseHandler() {
             @Override
             public void actionCompleted() {
@@ -138,6 +147,46 @@ public class EventDetailPage extends ActionBarActivity {
             }else{
                 joinButton.setText(JOIN_TEXT);
             }
+        }
+    }
+
+    public void toggleJoin(View v){
+        Log.d("asdf", "fogggd");
+        final ProgressDialog pd = new ProgressDialog(this);
+        pd.setCancelable(false);
+        if(joinButton.getText().toString().equals(JOIN_TEXT)){
+            pd.setMessage("Joining..");
+            pd.show();
+            SUNClient.getInstance().joinEvent(event, new SUNResponseHandler.SUNBooleanResponseHandler() {
+                @Override
+                public void actionCompleted() {
+                    pd.dismiss();
+                    updateJoiningStatus();
+                }
+
+                @Override
+                public void actionFailed(Error error) {
+                    pd.dismiss();
+                    Toast.makeText(EventDetailPage.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        }else{
+            pd.setMessage("Leaving..");
+            pd.show();
+            SUNClient.getInstance().leaveEvent(event, new SUNResponseHandler.SUNBooleanResponseHandler() {
+                @Override
+                public void actionCompleted() {
+                    pd.dismiss();
+                    updateJoiningStatus();
+                }
+
+                @Override
+                public void actionFailed(Error error) {
+                    pd.dismiss();
+                    Toast.makeText(EventDetailPage.this, error.getMessage(), Toast.LENGTH_LONG).show();
+
+                }
+            });
         }
     }
 }

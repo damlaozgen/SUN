@@ -1,9 +1,9 @@
 package me.sunapp.view;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,14 +12,10 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.Date;
-
 import me.sunapp.ContextManager;
 import me.sunapp.R;
 import me.sunapp.client.SUNClient;
 import me.sunapp.client.SUNResponseHandler;
-import me.sunapp.model.Course;
-import me.sunapp.model.Event;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -32,8 +28,8 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         ContextManager.prepare(this);
         ContextManager.getInstance().setCurrentActivity(this);
-        email = (EditText)findViewById(R.id.login_email);
-        password = (EditText)findViewById(R.id.login_password);
+        email = (EditText)findViewById(R.id.name);
+        password = (EditText)findViewById(R.id.password);
 
         Button button2 = (Button) findViewById(R.id.button2);
         button2.setOnClickListener(new OnClickListener() {
@@ -51,15 +47,22 @@ public class MainActivity extends ActionBarActivity {
         button.setOnClickListener(new OnClickListener() {
 
                                       public void onClick(final View v) {
+                                          final ProgressDialog pd = new ProgressDialog(MainActivity.this);
+                                          pd.setCancelable(false);
+                                          pd.setMessage("Logging in...");
+                                          pd.show();
                                           SUNClient.getInstance().login(email.getText().toString(), password.getText().toString(), new SUNResponseHandler.SUNBooleanResponseHandler() {
                                               @Override
                                               public void actionCompleted() {
+
+                                                  pd.dismiss();
                                                   showMainPage();
                                               }
 
 
                                               @Override
                                               public void actionFailed(Error error) {
+                                                  pd.dismiss();
                                                   Toast.makeText(v.getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                                               }
                                           });
@@ -68,14 +71,12 @@ public class MainActivity extends ActionBarActivity {
 
         checkLogin();
     }
-     @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //  Inflate  the menu; this adds items to the action bar if it is present.
+        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -85,8 +86,16 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_logout) {
+            SUNClient.getInstance().logout();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }if(id == R.id.action_profile){
+            Intent i = new Intent(this, ProfilePage.class);
+            i.putExtra("student_id", SUNClient.getInstance().getCurrentUser().getId());
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);

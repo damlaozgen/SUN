@@ -1,11 +1,13 @@
 package me.sunapp.view;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import me.sunapp.R;
+import me.sunapp.client.SUNClient;
 
 
 public class JoinedEventsPage extends ActionBarActivity {
@@ -19,8 +21,8 @@ public class JoinedEventsPage extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //  Inflate  the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_activity6, menu);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -32,8 +34,16 @@ public class JoinedEventsPage extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_logout) {
+            SUNClient.getInstance().logout();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }if(id == R.id.action_profile){
+            Intent i = new Intent(this, ProfilePage.class);
+            i.putExtra("student_id", SUNClient.getInstance().getCurrentUser().getId());
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);

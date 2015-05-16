@@ -37,7 +37,8 @@ public class MainPage extends ActionBarActivity {
         setContentView(R.layout.main_page);
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                                     .cacheOnDisk(true)
-                                    .cacheInMemory(true).build();
+                                    .cacheInMemory(true)
+                                    .showImageForEmptyUri(R.drawable.profile).build();
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
                                             .defaultDisplayImageOptions(options).build();
 
@@ -62,7 +63,7 @@ public class MainPage extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main_page, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -74,8 +75,12 @@ public class MainPage extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_logout) {
+            SUNClient.getInstance().logout();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         }if(id == R.id.action_profile){
             Intent i = new Intent(this, ProfilePage.class);
             i.putExtra("student_id", SUNClient.getInstance().getCurrentUser().getId());
@@ -118,6 +123,11 @@ public class MainPage extends ActionBarActivity {
     public void bumpPressed(View v){
         Intent i = new Intent(this, BumpActivity.class);
         i.putExtra("student_id", SUNClient.getInstance().getCurrentUser().getId());
+        startActivity(i);
+    }
+
+    public void showLeaderboard(View v){
+        Intent i = new Intent(this, LeaderBoardActivity.class);
         startActivity(i);
     }
 }

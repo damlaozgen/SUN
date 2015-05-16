@@ -44,7 +44,7 @@ public class AddInterestActivity extends ActionBarActivity implements InterestLi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_add_interest, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -56,8 +56,16 @@ public class AddInterestActivity extends ActionBarActivity implements InterestLi
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_logout) {
+            SUNClient.getInstance().logout();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }if(id == R.id.action_profile){
+            Intent i = new Intent(this, ProfilePage.class);
+            i.putExtra("student_id", SUNClient.getInstance().getCurrentUser().getId());
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);

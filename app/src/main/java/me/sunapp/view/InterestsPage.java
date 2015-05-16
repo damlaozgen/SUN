@@ -77,7 +77,7 @@ public class InterestsPage extends ActionBarActivity implements InterestListView
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_activity5, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -89,12 +89,21 @@ public class InterestsPage extends ActionBarActivity implements InterestListView
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_logout) {
+            SUNClient.getInstance().logout();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }if(id == R.id.action_profile){
+            Intent i = new Intent(this, ProfilePage.class);
+            i.putExtra("student_id", SUNClient.getInstance().getCurrentUser().getId());
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);
     }
+
     private void fillInfo(){
         name.setText(selectedStudent.getName());
         points.setText(""+selectedStudent.getPoints());
@@ -164,5 +173,11 @@ public class InterestsPage extends ActionBarActivity implements InterestListView
                 }
             });
         }
+    }
+
+    public void showFriends(View v){
+        Intent i = new Intent(this, FriendListPage.class);
+        i.putExtra("student_id", selectedStudent.getId());
+        startActivity(i);
     }
 }

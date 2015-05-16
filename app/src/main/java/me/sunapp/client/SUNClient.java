@@ -19,6 +19,7 @@ import me.sunapp.model.*;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -32,11 +33,8 @@ public class SUNClient implements SUNActionPerformer {
     private ArrayList<Notification> currentUserNotifications;
     private HashMap<Integer, Student> studentCache;
     private AsyncHttpClient httpClient;
-    private int dummyEventIdCounter;
     private Student currentUser;
-    private Joinable dummyJoinable;
-    private ArrayList<Joinable> dummyJoinableList;
-    private ArrayList<Student> dummyUserList;
+    private ArrayList<Location>locations;
     private ArrayList<SUNResponseHandler.SUNBooleanResponseHandler> userWaitList;
     private SUNClient(){
         // Private constructor for singleton
@@ -51,19 +49,70 @@ public class SUNClient implements SUNActionPerformer {
             loggedIn = true;
             fetchCurrentUser();
         }
-        dummyEventIdCounter = 1;
-        dummyJoinable = new Course(1, "CS 101", "Introduction to Programming");
-
-        dummyJoinableList = new ArrayList<Joinable>();
-        dummyJoinableList.add(dummyJoinable);
-
-        dummyUserList = new ArrayList<Student>();
+        fetchLocations();
     }
     public static SUNClient getInstance(){
         if(instance == null){
             instance = new SUNClient();
         }
         return instance;
+    }
+
+    public ArrayList<Location> getLocations() {
+        return locations;
+    }
+
+    private void fetchLocations(){
+        get("locations/", null, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                locations = new ArrayList<Location>();
+                try {
+                    JSONArray arr = new JSONArray(new String(responseBody));
+                    for(int i = 0;i < arr.length(); i++){
+                        locations.add(Location.parseFromJSONObject(arr.getJSONObject(i)));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+    }
+
+    public void logout(){
+        PreferenceManager.getDefaultSharedPreferences(ContextManager.getInstance().getAppContext()).edit().remove("accessToken").commit();
+        loggedIn = false;
+        currentUser = null;
+        httpClient.removeAllHeaders();
+    }
+
+    public void createUser(String username, String email, String password, String name, final SUNResponseHandler.SUNBooleanResponseHandler handler){
+        RequestParams params = new RequestParams();
+        params.put("username", username);
+        params.put("password", password);
+        params.put("email", email);
+        String[] nameParts = name.split(" ");
+        if(nameParts.length < 2){
+            handler.actionFailed(new Error("Please enter your first name and last name"));
+        }
+        params.put("first_name", nameParts[0]);
+        params.put("last_name", nameParts[nameParts.length-1]);
+        post("student/", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                handler.actionCompleted();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                handler.actionFailed(new Error(new String(responseBody)));
+            }
+        });
     }
 
     private void fetchCurrentUser(){
@@ -98,6 +147,22 @@ public class SUNClient implements SUNActionPerformer {
 
     public void waitCurrentUser(SUNResponseHandler.SUNBooleanResponseHandler handler){
         userWaitList.add(handler);
+    }
+
+    public void checkIn(String locationId, final SUNResponseHandler.SUNBooleanResponseHandler handler){
+        RequestParams params = new RequestParams();
+        params.put("location_id", locationId);
+        post("checkin", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                handler.actionCompleted();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                handler.actionFailed(new Error(new String(responseBody)));
+            }
+        });
     }
 
     public void login(String email, String password, final SUNResponseHandler.SUNBooleanResponseHandler handler){
@@ -138,6 +203,33 @@ public class SUNClient implements SUNActionPerformer {
         });
     }
 
+    public void fetchLeaderBoard(final SUNResponseHandler.SUNStudentListHandler handler){
+        get("leaderboard", null, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    Log.d("client", new String(responseBody));
+                    JSONArray list = new JSONArray(new String(responseBody));
+                    ArrayList<Student> alist = new ArrayList<Student>(list.length());
+                    for(int i = 0; i < list.length(); i++){
+                        Student s = Student.parseJSONObject(list.getJSONObject(i));
+                        if(s != null){
+                            alist.add(s);
+                        }
+                    }
+                    handler.actionCompleted(alist);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    handler.actionFailed(new Error(e.getMessage()));
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                handler.actionFailed(new Error(new String(responseBody)));
+            }
+        });
+    }
     public void fetchStudentInfo(final Student s, final SUNResponseHandler.SUNBooleanResponseHandler handler){
         if(studentCache.containsKey(s.getId())){
             Student cached = studentCache.get(s.getId());
@@ -169,7 +261,7 @@ public class SUNClient implements SUNActionPerformer {
         });
     }
     @Override
-    public void createEvent(final String name, final Date date, final Joinable joinable, final String eventInfo, final SUNResponseHandler.SUNEventResponseHandler handler) {
+    public void createEvent(final String name, final Date date, final Joinable joinable, final String eventInfo, Location location, final SUNResponseHandler.SUNBooleanResponseHandler handler) {
         if(name == null || name.length() == 0){
             handler.actionFailed(new Error("Name of the Event cannot be null"));
             return;
@@ -186,21 +278,14 @@ public class SUNClient implements SUNActionPerformer {
         RequestParams params = new RequestParams();
         params.put("joinable", joinable.getId());
         params.put("name", name);
-        params.put("date", date.toString());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        params.put("date", format.format(date));
         params.put("info", eventInfo);
+        params.put("location", location.getId());
         post("event/", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Event e;
-                try {
-                    e = Event.parseJSONObject(new JSONObject(new String(responseBody)));
-                    e.getJoinedStudents().add(currentUser);
-                    currentUser.getEvents().add(e);
-                    handler.actionCompleted(e);
-                } catch (JSONException e1) {
-                    e1.printStackTrace();
-                    handler.actionFailed(new Error(e1.getMessage()));
-                }
+                handler.actionCompleted();
             }
 
             @Override
@@ -347,12 +432,43 @@ public class SUNClient implements SUNActionPerformer {
         });
     }
 
+    public void joinEvent(final Event e, final SUNResponseHandler.SUNBooleanResponseHandler handler){
+        get("event/"+e.getId()+"/join/", null, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                handler.actionCompleted();
+                e.getJoinedStudents().add(currentUser);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                handler.actionFailed(new Error(new String(responseBody)));
+            }
+        });
+    }
+
+    public void leaveEvent(final Event e, final SUNResponseHandler.SUNBooleanResponseHandler handler){
+        get("event/"+e.getId()+"/leave/", null, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                handler.actionCompleted();
+                e.getJoinedStudents().remove(currentUser);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                handler.actionFailed(new Error(new String(responseBody)));
+            }
+        });
+    }
+
     @Override
     public void searchUser(String keyword, final SUNResponseHandler.SUNStudentListHandler handler) {
         get("student/search/"+keyword, null, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
+                    Log.d("Client", new String(responseBody));
                     JSONArray list = new JSONArray(new String(responseBody));
                     ArrayList<Student> alist = new ArrayList<Student>(list.length());
                     for(int i = 0; i < list.length(); i++){

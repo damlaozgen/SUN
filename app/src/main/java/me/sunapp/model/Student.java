@@ -99,7 +99,11 @@ public class Student extends User{
             if(obj.has("email"))
                 email = obj.getString("email");
 
+
             Student s = new Student(id, email, null, name, avatar, contact_info);
+            if(obj.has("points")){
+                s.setPoints(obj.getInt("points"));
+            }
             if(obj.has("friends")){
                 JSONArray friends = obj.getJSONArray("friends");
                 ArrayList<Student> friendList = new ArrayList<Student>(friends.length());

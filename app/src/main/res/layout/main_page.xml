@@ -83,4 +83,24 @@
         android:layout_toRightOf="@+id/button13"
         android:layout_toEndOf="@+id/button13" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:id="@+id/imageView5"
+        android:background="@drawable/line2"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/main_find_friends"
+        android:layout_toEndOf="@+id/main_find_friends"
+        android:layout_marginLeft="2dp" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="Top"
+        android:id="@+id/button6"
+        android:onClick="showLeaderboard"
+        android:background="#ffffffff"
+        android:layout_above="@+id/imageView11"
+        android:layout_toRightOf="@+id/imageView5" />
+
 </RelativeLayout>

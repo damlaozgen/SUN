@@ -72,7 +72,8 @@
         android:background="#ffffffff"
         android:layout_above="@+id/imageView3"
         android:layout_toRightOf="@+id/imageView14"
-        android:layout_toEndOf="@+id/imageView14" />
+        android:layout_toEndOf="@+id/imageView14"
+        android:visibility="gone" />
 
     <ListView
         android:layout_width="wrap_content"

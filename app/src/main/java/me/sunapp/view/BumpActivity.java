@@ -1,54 +1,82 @@
 package me.sunapp.view;
 
+import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
-import android.nfc.NfcEvent;
-import android.os.Handler;
-import android.os.Message;
+import android.nfc.Tag;
+import android.nfc.tech.MifareClassic;
+import android.nfc.tech.MifareUltralight;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.view.View;
 import android.widget.Toast;
 
+import java.nio.charset.Charset;
+import java.util.List;
+import java.util.Locale;
+
 import me.sunapp.R;
+import me.sunapp.client.SUNClient;
+import me.sunapp.client.SUNResponseHandler;
+import me.sunapp.helper.NdefMessageParser;
+import me.sunapp.helper.record.ParsedNdefRecord;
 import me.sunapp.model.Student;
 
-import static android.nfc.NdefRecord.createMime;
-
-public class BumpActivity extends ActionBarActivity implements NfcAdapter.CreateNdefMessageCallback,
-                                                               NfcAdapter.OnNdefPushCompleteCallback {
+public class BumpActivity extends ActionBarActivity{
     private static final int MESSAGE_SENT = 1 ;
-    NfcAdapter nfcAdapter;
+    private NfcAdapter mAdapter;
+    private PendingIntent mPendingIntent;
+    private NdefMessage mNdefPushMessage;
     Student selectedStudent;
-    TextView mInfoText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bump);
         selectedStudent = Student.createStudentWithId(getIntent().getExtras().getInt("student_id"));
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        if (nfcAdapter == null) {
-            mInfoText = (TextView) findViewById(R.id.textView);
-            mInfoText.setText("NFC is not available on this device.");
-        } else {
-            // Register callback to set NDEF message
-            nfcAdapter.setNdefPushMessageCallback(this, this);
-            // Register callback to listen for message-sent success
-            nfcAdapter.setOnNdefPushCompleteCallback(this, this);
+        resolveIntent(getIntent());
+
+        mAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (mAdapter == null) {
+            Toast.makeText(getApplicationContext(), "NFC is not available", Toast.LENGTH_LONG).show();
+            finish();
+            return;
         }
+
+        mPendingIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+        mNdefPushMessage = new NdefMessage(new NdefRecord[] { newTextRecord(
+                "Message from NFC Reader :-)", Locale.ENGLISH, true) });
+
+    }
+
+    private NdefRecord newTextRecord(String text, Locale locale, boolean encodeInUtf8) {
+        byte[] langBytes = locale.getLanguage().getBytes(Charset.forName("US-ASCII"));
+
+        Charset utfEncoding = encodeInUtf8 ? Charset.forName("UTF-8") : Charset.forName("UTF-16");
+        byte[] textBytes = text.getBytes(utfEncoding);
+
+        int utfBit = encodeInUtf8 ? 0 : (1 << 7);
+        char status = (char) (utfBit + langBytes.length);
+
+        byte[] data = new byte[1 + langBytes.length + textBytes.length];
+        data[0] = (byte) status;
+        System.arraycopy(langBytes, 0, data, 1, langBytes.length);
+        System.arraycopy(textBytes, 0, data, 1 + langBytes.length, textBytes.length);
+
+        return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT, new byte[0], data);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_bump, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -60,66 +88,166 @@ public class BumpActivity extends ActionBarActivity implements NfcAdapter.Create
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_logout) {
+            SUNClient.getInstance().logout();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }if(id == R.id.action_profile){
+            Intent i = new Intent(this, ProfilePage.class);
+            i.putExtra("student_id", SUNClient.getInstance().getCurrentUser().getId());
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public NdefMessage createNdefMessage(NfcEvent event) {
-        Log.d("NFC", "Creating ndef message");
-        String text = ("student_id:"+selectedStudent.getId());
-        NdefMessage msg = new NdefMessage(
-                new NdefRecord[] { createMime(
-                        "application/vnd.me.sunapp.android.beam", text.getBytes())});
-        return msg;
-    }
-
-    @Override
-    public void onResume() {
+    protected void onResume() {
         super.onResume();
-        // Check to see that the Activity started due to an Android Beam
-        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
-            processIntent(getIntent());
+        if (mAdapter != null) {
+            if (!mAdapter.isEnabled()) {
+                Toast.makeText(getApplicationContext(), "Please enable NFC", Toast.LENGTH_LONG).show();
+            }
+            mAdapter.enableForegroundDispatch(this, mPendingIntent, null, null);
+            mAdapter.enableForegroundNdefPush(this, mNdefPushMessage);
         }
     }
 
     @Override
-    public void onNewIntent(Intent intent) {
-        // onResume gets called after this to handle the intent
-        setIntent(intent);
+    protected void onPause() {
+        super.onPause();
+        if (mAdapter != null) {
+            mAdapter.disableForegroundDispatch(this);
+            mAdapter.disableForegroundNdefPush(this);
+        }
     }
 
-    /**
-     * Parses the NDEF Message from the intent and prints to the TextView
-     */
-    void processIntent(Intent intent) {
-        Parcelable[] rawMsgs = intent.getParcelableArrayExtra(
-                NfcAdapter.EXTRA_NDEF_MESSAGES);
-        // only one message sent during the beam
-        NdefMessage msg = (NdefMessage) rawMsgs[0];
-        // record 0 contains the MIME type, record 1 is the AAR, if present
-        mInfoText.setText(new String(msg.getRecords()[0].getPayload()));
+    private void resolveIntent(Intent intent) {
+        String action = intent.getAction();
+        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)
+                || NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)
+                || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
+            Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+            NdefMessage[] msgs;
+            if (rawMsgs != null) {
+                msgs = new NdefMessage[rawMsgs.length];
+                for (int i = 0; i < rawMsgs.length; i++) {
+                    msgs[i] = (NdefMessage) rawMsgs[i];
+                }
+            } else {
+                // Unknown tag type
+                final byte[] empty = new byte[0];
+                byte[] id = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
+                Parcelable tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+                String cardId = getCardID(tag);
+                Toast.makeText(getApplicationContext(), cardId, Toast.LENGTH_LONG).show();
+                final ProgressDialog pd = new ProgressDialog(this);
+                pd.setCancelable(false);
+                pd.setMessage("Checking in...");
+                pd.show();
+                SUNClient.getInstance().checkIn(cardId, new SUNResponseHandler.SUNBooleanResponseHandler() {
+                    @Override
+                    public void actionCompleted() {
+                        Toast.makeText(getApplicationContext(),"Checked-in", Toast.LENGTH_LONG).show();
+                        pd.dismiss();
+                        finish();
+                    }
+
+                    @Override
+                    public void actionFailed(Error error) {
+                        pd.dismiss();
+                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+            // Setup the views
+            //buildTagViews(msgs);
+        }
+
+
+    }
+    //606743630
+
+    private String getCardID(Parcelable p){
+        Tag tag = (Tag) p;
+        byte[] id = tag.getId();
+        return ""+getDec(id);
     }
 
-    @Override
-    public void onNdefPushComplete(NfcEvent arg0) {
-        // A handler is needed to send messages to the activity when this
-        // callback occurs, because it happens from a binder thread
-        mHandler.obtainMessage(MESSAGE_SENT).sendToTarget();
-    }
-
-    /** This handler receives a message from onNdefPushComplete */
-    private final Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MESSAGE_SENT:
-                    Toast.makeText(getApplicationContext(), "Message sent!", Toast.LENGTH_LONG).show();
-                    break;
+    private String getHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = bytes.length - 1; i >= 0; --i) {
+            int b = bytes[i] & 0xff;
+            if (b < 0x10)
+                sb.append('0');
+            sb.append(Integer.toHexString(b));
+            if (i > 0) {
+                sb.append(" ");
             }
         }
-    };
+        return sb.toString();
+    }
+
+    private long getDec(byte[] bytes) {
+        long result = 0;
+        long factor = 1;
+        for (int i = 0; i < bytes.length; ++i) {
+            long value = bytes[i] & 0xffl;
+            result += value * factor;
+            factor *= 256l;
+        }
+        return result;
+    }
+
+    private long getReversed(byte[] bytes) {
+        long result = 0;
+        long factor = 1;
+        for (int i = bytes.length - 1; i >= 0; --i) {
+            long value = bytes[i] & 0xffl;
+            result += value * factor;
+            factor *= 256l;
+        }
+        return result;
+    }
+    @Override
+    public void onNewIntent(Intent intent) {
+        setIntent(intent);
+        resolveIntent(intent);
+    }
+
+    void buildTagViews(NdefMessage[] msgs) {
+        if (msgs == null || msgs.length == 0) {
+            return;
+        }
+
+        List<ParsedNdefRecord> records = NdefMessageParser.parse(msgs[0]);
+        final int size = records.size();
+        for (int i = 0; i < size; i++) {
+            ParsedNdefRecord record = records.get(i);
+            Toast.makeText(getApplicationContext(), record.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void simulateClick(View v){
+        final ProgressDialog pd = new ProgressDialog(this);
+        pd.setCancelable(false);
+        pd.setMessage("Checking in...");
+        pd.show();
+        SUNClient.getInstance().checkIn("606743630", new SUNResponseHandler.SUNBooleanResponseHandler() {
+            @Override
+            public void actionCompleted() {
+                Toast.makeText(getApplicationContext(),"Checked-in", Toast.LENGTH_LONG).show();
+                pd.dismiss();
+                finish();
+            }
+
+            @Override
+            public void actionFailed(Error error) {
+                pd.dismiss();
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 }

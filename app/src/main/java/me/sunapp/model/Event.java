@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import me.sunapp.client.SUNClient;
+
 public class Event {
     private int id;
     private String name;
@@ -20,6 +22,7 @@ public class Event {
     private ArrayList<Student> joinedStudents;
     private String eventInfo;
     private int creatorId;
+    private Location location;
     private static HashMap<Integer, Event> cache = new HashMap<Integer, Event>();
 
     @Override
@@ -43,6 +46,14 @@ public class Event {
         this.eventInfo = eventInfo;
         joinedStudents = new ArrayList<Student>();
 
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public int getCreatorId() {
@@ -118,6 +129,14 @@ public class Event {
                 d = new Date();
             }
             Event e = new Event(id, creatorId, name, d, j, info);
+            if(obj.has("location_id")){
+                int loc_id = obj.getInt("location_id");
+                for(Location l : SUNClient.getInstance().getLocations()){
+                    if(l.getId() == loc_id){
+                        e.setLocation(l);
+                    }
+                }
+            }
             cache.put(id, e);
             JSONArray students = obj.getJSONArray("students");
             ArrayList<Student> studentArrayList = new ArrayList<>(students.length());

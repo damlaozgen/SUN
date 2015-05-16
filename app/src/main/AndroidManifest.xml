@@ -76,16 +76,18 @@
             android:name=".view.BumpActivity"
             android:label="@string/title_activity_bump" >
             <intent-filter>
-                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <action android:name="android.nfc.action.TAG_DISCOVERED" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="application/vnd.me.sunapp.android.beam" />
             </intent-filter>
         </activity>
         <activity
             android:name=".view.InterestDetailPage"
             android:label="@string/title_activity_interest_detail_page" >
+        </activity>
+        <activity
+            android:name=".view.LeaderBoardActivity"
+            android:label="@string/title_activity_leader_board" >
         </activity>
     </application>
 

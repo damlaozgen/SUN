@@ -143,9 +143,9 @@
         android:layout_alignBottom="@+id/textView34"
         android:layout_alignRight="@+id/event_info"
         android:layout_alignEnd="@+id/event_info"
-        android:layout_toRightOf="@+id/event_name"
-        android:layout_toEndOf="@+id/event_name"
-        android:background="@drawable/button2a" />
+        android:background="@drawable/button2a"
+        android:layout_toEndOf="@id/textView34"
+        android:layout_marginLeft="40dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -237,6 +237,7 @@
         android:layout_alignRight="@+id/event_creator_button"
         android:layout_alignEnd="@+id/event_creator_button"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:onClick="toggleJoin" />
 
 </RelativeLayout>

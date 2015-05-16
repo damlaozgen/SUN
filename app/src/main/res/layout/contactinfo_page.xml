@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-        android:id="@+id/email"
+        android:id="@+id/password"
         android:layout_alignRight="@+id/imageView4"
         android:layout_alignEnd="@+id/imageView4"
         android:layout_alignTop="@+id/textView21"
@@ -75,11 +75,11 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/contact_info"
-        android:layout_alignRight="@+id/email"
-        android:layout_alignEnd="@+id/email"
+        android:layout_alignRight="@+id/password"
+        android:layout_alignEnd="@+id/password"
         android:layout_alignTop="@+id/textView22"
-        android:layout_alignLeft="@+id/email"
-        android:layout_alignStart="@+id/email"
+        android:layout_alignLeft="@+id/password"
+        android:layout_alignStart="@+id/password"
         android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

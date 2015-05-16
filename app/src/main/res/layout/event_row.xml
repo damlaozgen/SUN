@@ -15,7 +15,8 @@
             android:text="New Text"
             android:id="@+id/event_name"
             android:gravity="center_vertical"
-            android:layout_marginLeft="20dp" />
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/abc_primary_text_material_light" />
     </LinearLayout>
 
     <ImageView
